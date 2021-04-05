@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import firebase from 'firebase/app'
+// import auth from 'firebase/auth'
 import store from './store'
 
 Vue.config.productionTip = false
@@ -18,8 +19,14 @@ firebase.initializeApp(firebaseConfig)
 
 window.firebase = firebase
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+  store.dispatch('setUser', user)
+
+  new Vue({
+    router,
+    store,
+    render: h => h(App)
+  }).$mount('#app')
+
+  unsubscribe()
+})

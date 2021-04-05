@@ -4,15 +4,39 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  currentUser: 'lin'
+  currentUser: null,
+  currentChannel: null,
+  isPrivate: false
 }
 
-const mutations = {}
+const mutations = {
+  SET_USER (state, user) {
+    state.currentUser = user
+  },
+  SET_CURRENT_CHANNEL (state, channel) {
+    state.currentChannel = channel
+  },
+  SET_PRIVATE (state, isPrivate) {
+    store.isPrivate = isPrivate
+  }
+}
 
-const actions = {}
+const actions = {
+  setUser (state, user) {
+    state.commit('SET_USER', user)
+  },
+  setCurrentChannel ({ commit }, channel) {
+    commit('SET_CURRENT_CHANNEL', channel)
+  },
+  setPrivate ({ commit }, isPrivate) {
+    commit('SET_PRIVATE', isPrivate)
+  }
+}
 
 const getters = {
-  currentUser: state => state.currentUser
+  currentUser: state => state.currentUser,
+  currentChannel: state => state.currentChannel,
+  isPrivate: state => state.isPrivate
 }
 
 const store = new Vuex.Store({

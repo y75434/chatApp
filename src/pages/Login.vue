@@ -4,6 +4,10 @@
     <h1>Go Chat</h1>
     <p>您的好幫手</p>
   </div>
+  <div class="alert alert-info" v-if="loading">請稍候......</div>
+  <div class="alert alert-danger" v-if="hasErrors">
+    <div v-for="error in errors" :key="error.id">{{ error }}</div>
+  </div>
   <div class="container-fluid">
     <div class="row mt-5">
       <div class="col text-center">
@@ -21,17 +25,53 @@
 
 <script>
 // import firebase from 'firebase'
-// import auth from 'firebase/auth'
+import firebase from 'firebase/app'
+// import database from 'firebase/database'
 
 export default {
-  name: 'Login'
-  // methods: { 目前無法使用
-  //   loginWithGoogle () {
-  //     firebase.auth().signWithPopup(new firebase.auth.GoogleAuthProvider())
-  //       .then((response) => {
-  //         console.log(response.user)
-  //       })
-  //   }
-  // }
+  name: 'Login',
+  data () {
+    return {
+      errors: [],
+      loading: false,
+      usersRef: firebase.database().ref('users')
+    }
+  },
+  computed: {
+    hasErrors () {
+      return this.errors.length > 0
+    }
+  },
+  methods: {
+    loginWithGoogle () {
+      this.loading = true
+      this.errors = []
+      firebase.auth().signWithPopup(new firebase.auth.GoogleAuthProvider())
+        .then((response) => {
+          // 存用戶資料到db
+          this.saveUserToUsersRef(response.user)
+          this.$store.dispatch('setUser', response.user)
+          this.$router.push('/')
+        })
+        .catch(error => {
+          this.errors.push(error.message)
+          this.loading = false
+        })
+    },
+    saveUserToUsersRef (user) {
+      return this.usersRef.child(user.uid).set({
+        name: user.displayName,
+        avatar: user.photoURL
+      })
+    },
+    loginWithTwitter () {
+      this.loading = true
+      this.errors = []
+      firebase.auth().signinWithPopup(new firebase.auth.TwitterAuthProvider())
+        .then((response) => {
+
+        })
+    }
+  }
 }
 </script>

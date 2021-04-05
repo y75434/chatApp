@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 
 import Login from '../pages/Login'
 import Chat from '../pages/Chat'
+// import auth from 'firebase/auth'
+import firebase from 'firebase/app'
 
 Vue.use(VueRouter)
 
@@ -10,7 +12,14 @@ const routes = [
   {
     path: '/',
     name: 'chat',
-    component: Chat
+    component: Chat,
+    beforeEnter: (to, from, next) => {
+      if (!firebase.auth().currentUser) {
+        next('/login')
+      } else {
+        next()
+      }
+    }
   },
   {
     path: '/login',
