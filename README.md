@@ -1,24 +1,25 @@
-# vue-demo
+## chartApp
 
-## Project setup
-```
-npm install
-```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### Demo
 
-### Compiles and minifies for production
-```
-npm run build
-```
+https://y75434.github.io/chatApp/#/
 
-### Lints and fixes files
-```
-npm run lint
-```
+
+### 使用技術
+
+Vue Cli 
+Vuex
+VueRouter
+VueComponents
+API
+RWD
+Bootstrap4
+jQuery
+JavaScript
+
+
+
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
