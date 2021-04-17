@@ -1,8 +1,9 @@
 import Vue from 'vue'
-import App from './App.vue'
+import App from './App'
 import router from './router'
 import firebase from 'firebase/app'
-// import auth from 'firebase/auth'
+// eslint-disable-next-line no-unused-vars
+import auth from 'firebase/auth'
 import store from './store'
 
 Vue.config.productionTip = false

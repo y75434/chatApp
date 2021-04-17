@@ -6,11 +6,12 @@
     </button>
 
     <div class="mt-4">
-      <button v-for="channel in channels" class="list-group-item list-group-item-action" type="button" :class="{'active': setActiveChannel(channel)}" @click="changeChannel(channel)">{{ channel.name }}</button>
+      <button v-for="channel in channels" :key="channel.id" class="list-group-item list-group-item-action" type="button" :class="{'active': setActiveChannel(channel)}" @click="changeChannel(channel)">{{ channel.name }}</button>
+      <span v-if="getNotification(channel) > 0 && channel.id !== currentChannel.id" class="float-right">{{ getNotification(channel) }}</span>
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="channelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="channelModal" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -23,7 +24,7 @@
                 <input v-model="new_channel" type="text" id="new_channel" name="new_channel" placeholder="Channel name" class="form-control">
               </div>
               <ul class="list-group" v-if="hasErrors">
-                <li class="list-group-item text-danger" v-for="error in errors">{{ error }}</li>
+                <li class="list-group-item text-danger" v-for="error in errors" :key="error.id">{{ error }}</li>
               </ul>
             </form>
           </div>
@@ -38,8 +39,10 @@
 </template>
 
 <script>
-// import database from 'firebase/database'
+import database from 'firebase/database'
 import { mapGetters } from 'vuex'
+import mixin from '../mixins'
+import $ from 'jquery'
 
 export default {
   name: 'channels',
@@ -47,15 +50,25 @@ export default {
     return {
       new_channel: '',
       errors: [],
-      channelsRef: firebase.database().ref('channels'),
+      channelsRef: database().ref('channels'),
+      messagesRef: database().ref('messages'),
+      notifCount: [],
       channels: [],
       channel: null
     }
   },
+  mixins: [mixin],
   computed: {
-    ...mapGetters(['currentChannel']),
+    ...mapGetters(['currentChannel', 'isPrivate']),
     hasErrors () {
       return this.errors.length > 0
+    }
+  },
+  watch: {
+    isPrivate () {
+      if (this.isPrivate) {
+        this.resetNotifications()
+      }
     }
   },
   methods: {
@@ -68,6 +81,7 @@ export default {
       const newChannel = { id: key, name: this.new_channel }
       this.channelsRef.child(key).update(newChannel)
         .then(() => {
+          this.$store.dispatch('setCurrentChannel', newChannel)
           this.new_channel = ''
           $('#channelModal').modal('hide')
         })
@@ -83,17 +97,46 @@ export default {
           this.channel = this.channels[0]
           this.$store.dispatch('setCurrentChannel', this.channel)
         }
+        this.addCountListener(snapshot.key)
       })
     },
+    addCountListener (channelId) {
+      this.messagesRef.child(channelId).on('value', snapshot => {
+        this.handleNotifications(channelId, this.currentChannel.id, this.notifCount, snapshot)
+      })
+    },
+    getNotification (channel) {
+      let notif = 0
+      this.notifCount.forEach(el => {
+        if (el.id === channel.id) {
+          notif = el.notif
+        }
+      })
+      return notif
+    },
+
     setActiveChannel (channel) {
       return channel.id === this.currentChannel.id
     },
     changeChannel (channel) {
+      // 重新設定通知
+      this.resetNotifications()
       this.$store.dispatch('setPrivate', false)
       this.$store.dispatch('setCurrentChannel', channel)
+      this.channel = channel
+    },
+    resetNotifications () {
+      const index = this.notifCount.findIndex(el => el.id === this.channel.id)
+      if (index !== -1) {
+        this.notifCount[index].total = this.notifCount[index].lastKnownTotal
+        this.notifCount[index].notif = 0
+      }
     },
     detachListeners () {
       this.channelsRef.off()
+      this.channel.forEach(el => {
+        this.messagesRef.child(el.id).off()
+      })
     }
   },
   mounted () {
