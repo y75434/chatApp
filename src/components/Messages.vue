@@ -25,12 +25,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentChannel', 'currentUser', 'isPrivate']),
-    channelName () {
-      if (this.channel !== null) {
-        return this.isPrivate ? '@' + this.channel.name : '#' + this.channel.name
-      }
-    }
+    ...mapGetters(['currentChannel', 'currentUser', 'isPrivate'])
+    // channelName () {
+    //   if (this.channel !== null) {
+    //     // return this.isPrivate ? '@ ' + this.channel.name : '# ' + this.channel.name
+
+    //     return this.channel
+    //   }
+    // }
   },
   watch: {
     // 轉換目前頻道
@@ -50,7 +52,7 @@ export default {
 
         // 移動到最上層
         this.$nextTick(() => {
-          $('html, body').scrollTop($(document).height())
+          // $('html, body').scrollTop($(document).height())
         })
       })
       // 傳送參數到事件

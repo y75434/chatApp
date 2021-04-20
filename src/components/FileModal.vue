@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import mine from 'mine-types'
+import mime from 'mime-types'
 
 export default {
   name: 'file-modal',
@@ -50,14 +50,14 @@ export default {
     sendFile () {
       if (this.file !== null) {
         if (this.isValid(this.file.name)) {
-          const metadata = { contentType: mine.lookup(this.file.name) }
+          const metadata = { contentType: mime.lookup(this.file.name) }
           this.$parent.uploadFile(this.file, metadata)
-          $('#fileModal').modal('hide')
+          // $('#fileModal').modal('hide')
         }
       }
     },
     resetForm () {
-      $('.form').trigger('reset')
+      // $('.form').trigger('reset')
       this.file = null
     }
   }

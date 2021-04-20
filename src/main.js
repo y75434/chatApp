@@ -6,6 +6,11 @@ import firebase from 'firebase/app'
 import auth from 'firebase/auth'
 import store from './store'
 
+import { $, jQuery } from 'jquery'
+// export for others scripts to use
+window.$ = $
+window.jQuery = jQuery
+
 Vue.config.productionTip = false
 
 var firebaseConfig = {

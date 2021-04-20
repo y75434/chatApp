@@ -5,22 +5,19 @@
         <Sidebar>
       </div>
       <div class="col-md-8 content">
-        <Message>
+        <Messages>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import MessageForm from '../components/MessageForm.vue'
-// import auth from 'firebase/auth'
-// import firebase from 'firebase/app'
 import Sidebar from '../components/Sidebar'
-import Messages from '../messages/Messages'
+import Messages from '../components/Messages'
 
 export default {
   name: 'Chat',
-  components: { Sidebar, MessagesMessageForm }
+  components: { Sidebar, Messages }
 }
 </script>
 

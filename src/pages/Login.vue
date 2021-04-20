@@ -24,14 +24,18 @@
 </template>
 
 <script>
-// import firebase from 'firebase'
-import firebase from 'firebase/app'
-// import database from 'firebase/database'
+import auth from 'firebase/auth'
+// import firebase from 'firebase/app'
+import database from 'firebase/database'
 
 export default {
   name: 'Login',
   data () {
     return {
+      email: '',
+      password: '',
+      forgot_password: '',
+      // fpform: false,
       errors: [],
       loading: false,
       usersRef: firebase.database().ref('users')
@@ -43,6 +47,25 @@ export default {
     }
   },
   methods: {
+    login () {
+      this.errors = []
+      // if (!this.isFormValid()) {
+      this.isLoading = true
+
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(response => {
+        const user = response.user
+
+        this.$store.dispatch('setUser', user)
+        this.$router.push('/')
+      }).catch(error => {
+        this.errors.push(error.message)
+        this.isLoading = false
+      })
+      // }
+    },
+    // isFormValid(){
+
+    // }
     loginWithGoogle () {
       this.loading = true
       this.errors = []
