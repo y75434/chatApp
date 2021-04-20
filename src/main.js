@@ -3,13 +3,14 @@ import App from './App'
 import router from './router'
 import firebase from 'firebase/app'
 // eslint-disable-next-line no-unused-vars
-import auth from 'firebase/auth'
+// import auth from 'firebase/auth'
 import store from './store'
+import $ from 'jquery'
 
-import { $, jQuery } from 'jquery'
+// import { $, jQuery } from 'jquery'
 // export for others scripts to use
 window.$ = $
-window.jQuery = jQuery
+// window.jQuery = jQuery
 
 Vue.config.productionTip = false
 

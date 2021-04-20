@@ -1,9 +1,9 @@
 export default {
   methods: {
     handleNotifications (channelId, currentChannelId, notifCount, snapshot) {
-      const lastTotal = 0
+      let lastTotal = 0
       const index = notifCount.findIndex(el => el.id === channelId)
-      if (index != -1) {
+      if (index !== -1) {
         if (channelId !== currentChannelId) {
           lastTotal = notifCount[index].total
           if (snapshot.numChildren() - lastTotal > 0) {

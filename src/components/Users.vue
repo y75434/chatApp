@@ -19,19 +19,20 @@
 </template>
 
 <script>
-import database from 'firebase/database'
+// import database from 'firebase/database'
 import { mapGetters } from 'vuex'
 import mixin from '../mixins'
+import firebase from 'firebase'
 
 export default {
   name: 'users',
   data () {
     return {
       users: [],
-      usersRef: database().ref('users'),
-      connectedRef: database().ref('.info/connected'),
-      presenceRef: database().ref('presence'),
-      privateMessagesRef: database().ref('privateMessages'),
+      usersRef: firebase.database().ref('users'),
+      connectedRef: firebase.database().ref('.info/connected'),
+      presenceRef: firebase.database().ref('presence'),
+      privateMessagesRef: firebase.database().ref('privateMessages'),
       notifCount: [],
       channel: null
     }
@@ -54,7 +55,7 @@ export default {
           const user = snapshot.val()
           user.uid = snapshot.key
           user.status = 'offline'
-          this.userd.push(user)
+          this.users.push(user)
         }
       })
 

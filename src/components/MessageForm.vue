@@ -20,8 +20,10 @@
 <script>
 import { mapGetters } from 'vuex'
 import FileModal from './FileModal'
-import uuidV4 from 'uuid/v4'
-import storage from 'firebase/storage'
+import uuidV4 from 'uuidv4'
+// import storage from './firebase/storage'
+import firebase from 'firebase'
+import $ from 'jquery'
 
 export default {
   name: 'message-form',
@@ -36,18 +38,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentChannel', 'currentUser', 'isPrivate']),
-    uploadLabel () {
-      switch (this.uploadState) {
-        case 'uploading': return '上傳中'
-          break
-        case 'error': return '發生錯誤'
-          break
-        case 'done': return '上傳完成'
-          break
-        default: return ''
-      }
-    }
+    ...mapGetters(['currentChannel', 'currentUser', 'isPrivate'])
+    // uploadLabel () {
+    //   switch (this.uploadState) {
+    //     case 'uploading' : return '上傳中'
+    //       break
+    //     case 'error': return '發生錯誤'
+    //       break
+    //     case 'done': return '上傳完成'
+    //       break
+    //     default: return ''
+    //   }
+    // }
   },
   methods: {
     sendMessage () {
@@ -93,8 +95,9 @@ export default {
     },
     uploadFile (file, metadata) {
       if (file === null) return false
-      const pathToUpload = this.currentChannel.id
-      const ref = this.$parent.getMessagesRef()
+      // const pathToUpload = this.currentChannel.id
+      // const ref = this.$parent.getMessagesRef()
+      // 路徑
       const filePath = this.getPath() + '/' + uuidV4() + '.jpg'
 
       this.uploadTask = this.storageRef.child(filePath).put(file, metadata)
@@ -110,9 +113,9 @@ export default {
       // 清空
       this.$refs.file_modal.resetForm()
       // 恢復檔案
-      const fileUrl = this.uploadTask.snapshot.ref.getDownloadURL().then(fileUrl => {
-        this.sendFileMessage(fileUrl, ref, pathToUpload)
-      })
+      // const fileUrl = this.uploadTask.snapshot.ref.getDownloadURL().then(fileUrl => {
+      //   this.sendFileMessage(fileUrl, ref, pathToUpload)
+      // })
     },
     sendFileMessage (fileUrl, ref, pathToUpload) {
       ref.child(pathToUpload).push().set(this.createMessage(fileUrl)).then(() => {

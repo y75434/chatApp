@@ -11,7 +11,7 @@
   <div class="container-fluid">
     <div class="row mt-5">
       <div class="col text-center">
-        <button @click="loginWithGoogle" type="button" class="btn btn-outline-danger">Google登入</button>
+        <button @click="loginWithGoogle()" type="button" class="btn btn-outline-danger">Google登入</button>
       </div>
     </div>
     <div class="row mt-5">
@@ -24,9 +24,10 @@
 </template>
 
 <script>
-import auth from 'firebase/auth'
+// import auth from 'firebase/auth'
 // import firebase from 'firebase/app'
-import database from 'firebase/database'
+// import database from '../firebase/database'
+import firebase from 'firebase'
 
 export default {
   name: 'Login',
@@ -69,7 +70,7 @@ export default {
     loginWithGoogle () {
       this.loading = true
       this.errors = []
-      firebase.auth().signWithPopup(new firebase.auth.GoogleAuthProvider())
+      firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
         .then((response) => {
           // 存用戶資料到db
           this.saveUserToUsersRef(response.user)
@@ -90,7 +91,7 @@ export default {
     loginWithTwitter () {
       this.loading = true
       this.errors = []
-      firebase.auth().signinWithPopup(new firebase.auth.TwitterAuthProvider())
+      firebase.auth().signInWithPopup(new firebase.auth.TwitterAuthProvider())
         .then((response) => {
 
         })

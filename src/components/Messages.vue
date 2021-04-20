@@ -1,16 +1,18 @@
 <template>
   <div>
     <h2>{{ channelName }}</h2>
-    <SingleMessage :messages="messages">
-    <MessageForm>
+    <SingleMessage :messages="messages"></SingleMessage>
+    <MessageForm/>
   </div>
 </template>
 
 <script>
 import SingleMessage from './SingleMessage'
 import MessageForm from './MessageForm'
-import database from 'firebase/database'
+// import database from 'firebase/database'
 import { mapGetters } from 'vuex'
+import firebase from 'firebase'
+import $ from 'jquery'
 
 export default {
   name: 'messages',
@@ -52,7 +54,7 @@ export default {
 
         // 移動到最上層
         this.$nextTick(() => {
-          // $('html, body').scrollTop($(document).height())
+          $('html, body').scrollTop($(document).height())
         })
       })
       // 傳送參數到事件

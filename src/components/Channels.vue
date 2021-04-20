@@ -39,7 +39,8 @@
 </template>
 
 <script>
-import database from 'firebase/database'
+import firebase from 'firebase'
+// import database from 'firebase/database'
 import { mapGetters } from 'vuex'
 import mixin from '../mixins'
 import $ from 'jquery'
@@ -50,8 +51,8 @@ export default {
     return {
       new_channel: '',
       errors: [],
-      channelsRef: database().ref('channels'),
-      messagesRef: database().ref('messages'),
+      channelsRef: firebase.database().ref('channels'),
+      messagesRef: firebase.database().ref('messages'),
       notifCount: [],
       channels: [],
       channel: null

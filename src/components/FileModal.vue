@@ -17,7 +17,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-            <button ＠click="sendFile" type="button" class="btn btn-primary">傳送檔案</button>
+            <button @click="sendFile" type="button" class="btn btn-primary">傳送檔案</button>
           </div>
         </div>
       </div>
@@ -27,6 +27,7 @@
 
 <script>
 import mime from 'mime-types'
+import $ from 'jquery'
 
 export default {
   name: 'file-modal',
@@ -52,12 +53,12 @@ export default {
         if (this.isValid(this.file.name)) {
           const metadata = { contentType: mime.lookup(this.file.name) }
           this.$parent.uploadFile(this.file, metadata)
-          // $('#fileModal').modal('hide')
+          $('#fileModal').modal('hide')
         }
       }
     },
     resetForm () {
-      // $('.form').trigger('reset')
+      $('.form').trigger('reset')
       this.file = null
     }
   }

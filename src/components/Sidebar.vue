@@ -7,16 +7,17 @@
     </span>
     <button @click="logout" class="btn btn-outline-light">登出</button>
     <Channels/>
-    <Users>
+    <Users/>
   </div>
 </template>
 
 <script>
-import auth from 'firebase/auth'
+// import auth from 'firebase/auth'
 import { mapGetters } from 'vuex'
 import Channels from './Channels'
 import Users from './Users'
-import database from 'firebase/database'
+// import database from 'firebase/database'
+import firebase from 'firebase'
 
 export default {
   name: 'Sidebar',
