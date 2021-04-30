@@ -5,7 +5,7 @@
         <div class="input-group mb-3">
           <input v-model.trim="message" name="message" id="message" class="form-control mt-3" placeholder="請輸入">
           <div class="input-group-append">
-            <button @click.prevent="openFileModal" class="btn btn-primary mt-3" type="button">傳送</button>
+            <button x-on:click.prevent="openFileModal" class="btn btn-primary mt-3" type="button">傳送</button>
           </div>
           <div class="input-group-append">
             <button class="btn btn-warning mt-3" :disabled="'uploadState == uploading'" type="button">更新</button>
@@ -134,7 +134,7 @@ export default {
       }
     },
     openFileModal () {
-      $('#fileModal').appendTo('body').modal('show')
+      $('#fileModal').modal('show')
     }
   },
   mounted () {

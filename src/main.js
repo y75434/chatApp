@@ -6,7 +6,7 @@ import firebase from 'firebase/app'
 // import auth from 'firebase/auth'
 import store from './store'
 import $ from 'jquery'
-
+import 'bootstrap'
 // import { $, jQuery } from 'jquery'
 // export for others scripts to use
 window.$ = $

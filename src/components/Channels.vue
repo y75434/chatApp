@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Button trigger modal -->
-    <button @click="openModal" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <button @click="openModal()" type="button" class="btn btn-primary" >
       新增頻道
     </button>
 
@@ -11,11 +11,11 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="channelModal" aria-hidden="true">
+    <div class="modal fade" id="channelModal">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <h5 class="modal-title">Modal title</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -29,8 +29,8 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-            <button ＠click="addChannel" type="button" class="btn btn-primary">新增頻道</button>
+            <button @click="closeModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            <button @click="addChannel" type="button" class="btn btn-primary">新增頻道</button>
           </div>
         </div>
       </div>
@@ -74,12 +74,16 @@ export default {
   },
   methods: {
     openModal () {
-      $('#channelModal').appendTo('body').modal('show')
+      $('#channelModal').modal('show')
+    },
+    closeModal () {
+      $('#channelModal').modal('hide')
     },
     addChannel () {
       this.errors = []
       const key = this.channelsRef.push().key
       const newChannel = { id: key, name: this.new_channel }
+      console.log(newChannel)
       this.channelsRef.child(key).update(newChannel)
         .then(() => {
           this.$store.dispatch('setCurrentChannel', newChannel)

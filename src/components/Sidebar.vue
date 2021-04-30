@@ -5,7 +5,7 @@
       <img class="rounded-circle mt-2" height="30" :src="currentUser.photoURL">
       <span class="text-light">{{ currentUser.displayName }}</span>
     </span>
-    <button @click="logout" class="btn btn-outline-light">登出</button>
+    <button @click="logout" class="btn btn-light">登出</button>
     <Channels/>
     <Users/>
   </div>

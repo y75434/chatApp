@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-100">
     <h2>{{ channelName }}</h2>
     <SingleMessage :messages="messages"></SingleMessage>
     <MessageForm/>
@@ -15,7 +15,7 @@ import firebase from 'firebase'
 import $ from 'jquery'
 
 export default {
-  name: 'messages',
+  name: 'message',
   components: { SingleMessage, MessageForm },
   data () {
     return {
@@ -27,18 +27,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentChannel', 'currentUser', 'isPrivate'])
-    // channelName () {
-    //   if (this.channel !== null) {
-    //     // return this.isPrivate ? '@ ' + this.channel.name : '# ' + this.channel.name
-
-    //     return this.channel
-    //   }
-    // }
+    ...mapGetters(['currentChannel', 'currentUser', 'isPrivate']),
+    channelName () {
+      if (this.channel !== null) {
+        return this.isPrivate ? '@ ' + this.channel.name : '# ' + this.channel.name
+      } else {
+        return 'Welcome'
+      }
+    }
   },
   watch: {
     // 轉換目前頻道
-    currentChannel: function () {
+    currentChannel () {
       this.detachListeners()
       this.addListeners()
       this.channel = this.currentChannel

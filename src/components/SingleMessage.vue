@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mt-3 mb-5">
+    <div class="mt-3 mb-5 h-100">
       <div v-for="message in messages" :key="message.id">
         <div class="media">
           <img :src="message.user.avatar" height="50" alt="" class="align-self-start mr-3">
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+// import moment from 'moment'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -34,11 +34,19 @@ export default {
     isFile (message) {
       return message.content == null && message.image != null
     }
-  },
-  filters: {
-    fromNow (value) {
-      return moment(value).fromNow()
-    }
+  // },
+  // filters: {
+  //   // 設定現在時間
+  //   moment: function (fromNow) {
+  //     return moment(fromNow).format('MMMM Do YYYY, h:mm:ss a')
+  //   }
   }
 }
 </script>
+
+<style scoped>
+    .self_message {
+        border-left: 5px solid red;
+        padding: 0 10px;
+    }
+</style>
