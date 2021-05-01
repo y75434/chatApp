@@ -28,6 +28,7 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-standard": "^5.1.2",
     "babel-eslint": "^10.1.0",
+    "cache-loader": "^4.1.0",
     "ember-auto-import": "^1.11.3",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
@@ -36,6 +37,6 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
     "vue-template-compiler": "^2.6.11",
-    "webpack": "^5.36.1"
+    "webpack": "^4.46.0"
   }
 }

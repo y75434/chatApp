@@ -12,10 +12,10 @@ import MessageForm from './MessageForm'
 // import database from 'firebase/database'
 import { mapGetters } from 'vuex'
 import firebase from 'firebase'
-import $ from 'jquery'
+// import $ from 'jquery'
 
 export default {
-  name: 'message',
+  name: 'messages',
   components: { SingleMessage, MessageForm },
   data () {
     return {
@@ -46,6 +46,7 @@ export default {
   },
   methods: {
     addListeners () {
+      // 監聽目前在哪個頁面
       const ref = this.getMessagesRef()
       ref.child(this.currentChannel.id).on('child_added', (snapshot) => {
         const message = snapshot.val()
@@ -53,9 +54,9 @@ export default {
         this.messages.push(message)
 
         // 移動到最上層
-        this.$nextTick(() => {
-          $('html, body').scrollTop($(document).height())
-        })
+        // this.$nextTick(() => {
+        //   $('html, body').scrollTop($(document).height())
+        // })
       })
       // 傳送參數到事件
       this.addToListeners(this.currentChannel.id, ref, 'child_added')
@@ -78,6 +79,7 @@ export default {
       //   this.messagesRef.child(this.channel.id).off()
       // }
     },
+    // 在群組還是在私人訊息
     getMessagesRef () {
       if (this.isPrivate) {
         return this.privateMessagesRef

@@ -17,7 +17,7 @@ const mutations = {
     state.currentChannel = channel
   },
   SET_PRIVATE (state, isPrivate) {
-    store.isPrivate = isPrivate
+    state.isPrivate = isPrivate
   }
 }
 

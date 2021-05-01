@@ -75,7 +75,7 @@ export default {
           this.privateMessagesRef.child(this.getChannelId(snapshot.key)).off()
         }
       })
-
+      // 紀錄用戶是否上線
       this.connectedRef.on('value', snapshot => {
         if (snapshot.val() === true) {
           const ref = this.presenceRef.child(this.currentUser.uid)
@@ -138,6 +138,7 @@ export default {
       const channelId = this.getChannelId(user.uid)
       const channel = { id: channelId, name: user.name }
       this.channel = channel
+      // 到私人訊息頁
       this.$store.dispatch('setPrivate', true)
       this.$store.dispatch('setCurrentChannel', channel)
     },

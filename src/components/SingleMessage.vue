@@ -3,13 +3,13 @@
     <div class="mt-3 mb-5 h-100">
       <div v-for="message in messages" :key="message.id">
         <div class="media">
-          <img :src="message.user.avatar" height="50" alt="" class="align-self-start mr-3">
+          <img :src="message.user.avatar" height="50" class="align-self-start mr-3">
           <div class="media-body">
             <h5 class="mt-0">
-              <a href="#">{{ message.user.name }}</a> - {{ message.timestamp || fromNow }}
+              <a href="#">{{ message.user.name }}</a> - {{ message.timestamp | fromNow }}
             </h5>
             <p v-if="!isFile(message)" :class="{'self_message': selfMessage(message.user)}">{{ message.content }}</p>
-            <img  v-else class="img img-responsive" height="200" :src="message.image" alt="image">
+            <img v-else class="img img-responsive" height="200" :src="message.image" alt="image">
           </div>
         </div>
       </div>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-// import moment from 'moment'
+import moment from 'moment'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -34,12 +34,12 @@ export default {
     isFile (message) {
       return message.content == null && message.image != null
     }
-  // },
-  // filters: {
-  //   // 設定現在時間
-  //   moment: function (fromNow) {
-  //     return moment(fromNow).format('MMMM Do YYYY, h:mm:ss a')
-  //   }
+  },
+  filters: {
+    // 設定現在時間
+    fromNow (value) {
+      return moment(value).format('MMMM Do YYYY, h:mm:ss a')
+    }
   }
 }
 </script>

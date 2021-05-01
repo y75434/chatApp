@@ -126,6 +126,7 @@ export default {
     changeChannel (channel) {
       // 重新設定通知
       this.resetNotifications()
+      // 更新頻道資訊
       this.$store.dispatch('setPrivate', false)
       this.$store.dispatch('setCurrentChannel', channel)
       this.channel = channel
