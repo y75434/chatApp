@@ -1,9 +1,9 @@
 <template>
-  <div class="h-100">
+  <v-card>
     <h2>{{ channelName }}</h2>
     <SingleMessage :messages="messages"></SingleMessage>
     <MessageForm/>
-  </div>
+  </v-card>
 </template>
 
 <script>

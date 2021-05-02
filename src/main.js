@@ -7,6 +7,7 @@ import firebase from 'firebase/app'
 import store from './store'
 import $ from 'jquery'
 import 'bootstrap'
+import vuetify from './plugins/vuetify'
 // import { $, jQuery } from 'jquery'
 // export for others scripts to use
 window.$ = $
@@ -32,6 +33,7 @@ const unsubscribe = firebase.auth().onAuthStateChanged(user => {
   new Vue({
     router,
     store,
+    vuetify,
     render: h => h(App)
   }).$mount('#app')
 

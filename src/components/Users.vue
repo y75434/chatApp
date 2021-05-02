@@ -1,20 +1,18 @@
 <template>
-  <div>
-    <div class="text-dark">
-      <h4>Users</h4>
-        <div class="mt-4">
-          <button v-for="user in users" :key="user.id" class="list-group-item list-group-item-action" type="button" :class="{'active': isActive(user)}" @click.prevent="changeChannel(user)">
-            <span :class="{'fa fa-circle online': isOnline(user), 'fa fa-circle offline': !isOnline(user)}"></span>
+  <div class="text-dark">
+    <h4>Users</h4>
+      <div class="mt-4">
+        <button v-for="user in users" :key="user.id" class="list-group-item list-group-item-action" type="button" :class="{'active': isActive(user)}" @click.prevent="changeChannel(user)">
+          <span :class="{'fa fa-circle online': isOnline(user), 'fa fa-circle offline': !isOnline(user)}"></span>
+          <span>
+            <img :src="user.avatar" height="40" class="img rounded-circle">
             <span>
-              <img :src="user.avatar" height="40" class="img rounded-circle">
-              <span>
-                <a :class="{'text-light': isActive(user)}">{{ user.name }}</a>
-                <span class="float-right" v-if="getNotification(user) >= 1">{{ getNotification(user) }}</span>
-              </span>
+              <a :class="{'text-light': isActive(user)}">{{ user.name }}</a>
+              <span class="float-right" v-if="getNotification(user) >= 1">{{ getNotification(user) }}</span>
             </span>
-          </button>
-        </div>
-    </div>
+          </span>
+        </button>
+      </div>
   </div>
 </template>
 

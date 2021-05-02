@@ -4,11 +4,22 @@
     <button @click="openModal()" type="button" class="btn btn-primary" >
       新增頻道
     </button>
-
     <div class="mt-4">
       <button v-for="channel in channels" :key="channel.id" class="list-group-item list-group-item-action" type="button" :class="{'active': setActiveChannel(channel)}" @click="changeChannel(channel)">{{ channel.name }}</button>
       <span v-if="getNotification(channel) > 0 && channel.id !== currentChannel.id" class="float-right">{{ getNotification(channel) }}</span>
     </div>
+
+    <v-card class="mx-auto" min-width="300">
+      <v-list>
+        <v-list-item-group color="primary">
+          <v-list-item v-for="channel in channels" :key="channel.id" >
+            <v-list-item-content>
+              <v-list-item-title>{{ channel.name }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-card>
 
     <!-- Modal -->
     <div class="modal fade" id="channelModal">

@@ -15,10 +15,12 @@
     "mime-db": "^1.47.0",
     "mime-types": "^2.1.30",
     "moment": "^2.29.1",
+    "popper.js": "^1.16.1",
     "uuid": "^3.4.0",
     "uuidv4": "^6.2.7",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vuetify": "^2.4.0",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
@@ -36,7 +38,11 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
+    "sass": "^1.32.0",
+    "sass-loader": "^10.0.0",
+    "vue-cli-plugin-vuetify": "~2.4.0",
     "vue-template-compiler": "^2.6.11",
+    "vuetify-loader": "^1.7.0",
     "webpack": "^4.46.0"
   }
 }

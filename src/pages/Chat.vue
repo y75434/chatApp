@@ -1,14 +1,14 @@
 <template>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-4 sidebar">
+  <v-container>
+    <v-row >
+      <v-col cols="12" sm="4" md="4">
         <Sidebar/>
-      </div>
-      <div class="col-md-8 content">
+      </v-col>
+      <v-col cols="12" sm="8" md="8">
         <Messages/>
-      </div>
-    </div>
-  </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
