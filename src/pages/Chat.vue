@@ -2,7 +2,6 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-4 sidebar">
-        <h1>44444</h1>
         <Sidebar/>
       </div>
       <div class="col-md-8 content">

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-dark">
     <h2 class="text-light">Chat</h2>
     <span>
       <img class="rounded-circle mt-2" height="30" :src="currentUser.photoURL">
@@ -12,11 +12,9 @@
 </template>
 
 <script>
-// import auth from 'firebase/auth'
 import { mapGetters } from 'vuex'
 import Channels from './Channels'
 import Users from './Users'
-// import database from 'firebase/database'
 import firebase from 'firebase'
 
 export default {

@@ -14,11 +14,6 @@
         <button @click="loginWithGoogle()" type="button" class="btn btn-outline-danger">Google登入</button>
       </div>
     </div>
-    <div class="row mt-5">
-      <div class="col text-center">
-        <button type="button" class="btn btn-outline-info">Twitter登入</button>
-      </div>
-    </div>
   </div>
   </div>
 </template>

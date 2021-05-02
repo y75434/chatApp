@@ -94,6 +94,7 @@ export default {
     isOnline (user) {
       return user.status === 'online'
     },
+    // 計算有幾個通知
     getNotification (user) {
       const channelId = this.getChannelId(user.uid)
       let notif = 0

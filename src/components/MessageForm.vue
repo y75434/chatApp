@@ -12,14 +12,13 @@
           </div>
         </div>
       </form>
-      <file-modal ref="file_modal"></file-modal>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import FileModal from './FileModal'
+// import FileModal from './FileModal'
 // import uuidV4 from 'uuidv4'
 // import storage from './firebase/storage'
 import firebase from 'firebase'
@@ -27,7 +26,7 @@ import $ from 'jquery'
 
 export default {
   name: 'message-form',
-  components: { FileModal },
+  // components: { FileModal },
   data () {
     return {
       message: '',
@@ -51,32 +50,28 @@ export default {
           id: this.currentUser.uid
         }
       }
-      // 驗證
-      if (this.currentChannel !== null) {
-        if (this.message.length > 0) {
-          this.$parent.getMessagesRef.child(this.currentChannel.id).push().set(newMessage)
-            .then(() => {
-              console.log('success')
-            }).catch((error) => {
-              this.errors.push(error.message)
-              console.log(error.message)
-            })
-          this.message = ''
+
+      if (this.currentChannel !== null && this.message.length > 0) {
+        if (this.isPrivate) {
+          this.$parent.privateMessagesRef.child(this.currentChannel.id).push().set(newMessage)
+        } else {
+          this.$parent.messagesRef.child(this.currentChannel.id).push().set(newMessage)
         }
+        this.message = ''
       }
-    },
-    createMessage () {
-      const message = {
-        timestamp: firebase.database.ServerValue.TIMESTAMP,
-        user: {
-          name: this.currentUser.displayName,
-          avatar: this.currentUser.photoURL,
-          id: this.currentUser.uid
-        }
-      }
+
+      // createMessage () {
+      //   const message = {
+      //     timestamp: firebase.database.ServerValue.TIMESTAMP,
+      //     user: {
+      //       name: this.currentUser.displayName,
+      //       avatar: this.currentUser.photoURL,
+      //       id: this.currentUser.uid
+      //     }
+      //   }
       // new.content = this.message
-      this.message = message.content
-      return message
+      // this.message = message.content
+      // return message
       // if (fileUrl == null) {
       //   message.content = this.message
       // } else {

@@ -52,7 +52,6 @@ export default {
         const message = snapshot.val()
         message.id = snapshot.key
         this.messages.push(message)
-
         // 移動到最上層
         // this.$nextTick(() => {
         //   $('html, body').scrollTop($(document).height())
@@ -80,7 +79,7 @@ export default {
       // }
     },
     // 在群組還是在私人訊息
-    getMessagesRef () {
+    getMessagesRef  () {
       if (this.isPrivate) {
         return this.privateMessagesRef
       } else {
