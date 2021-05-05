@@ -16,7 +16,6 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
             <button @click="sendFile" type="button" class="btn btn-primary">傳送檔案</button>
           </div>
         </div>
@@ -26,6 +25,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import mime from 'mime-types'
 import $ from 'jquery'
 
@@ -36,6 +36,9 @@ export default {
       file: null,
       authorized: ['image/jpeg', 'image/jpg', 'image/png']
     }
+  },
+  computed: {
+    ...mapGetters(['currentChannel', 'currentUser', 'isPrivate'])
   },
   methods: {
     isValid (filename) {
@@ -48,14 +51,18 @@ export default {
         this.file = files[0]
       }
     },
+    // sendFile () {
+    //   if (this.file !== null) {
+    //     if (this.isValid(this.file.name)) {
+    //       const metadata = { contentType: mime.lookup(this.file.name) }
+    //       this.$parent.uploadFile(this.file, metadata)
+    //       $('#fileModal').modal('hide')
+    //     }
+    //   }
+    // },
     sendFile () {
-      if (this.file !== null) {
-        if (this.isValid(this.file.name)) {
-          const metadata = { contentType: mime.lookup(this.file.name) }
-          this.$parent.uploadFile(this.file, metadata)
-          $('#fileModal').modal('hide')
-        }
-      }
+      this.$parent.uploadFile(this.file)
+      $('#fileModal').modal('hide')
     },
     resetForm () {
       $('.form').trigger('reset')

@@ -47,12 +47,12 @@
                   <v-card>
                     <v-card-title class="headline grey lighten-2">輸入頻道名稱</v-card-title>
                     <v-card-text >
-                      <v-text-field v-model="add" placeholder="Channel name"></v-text-field>
+                      <v-text-field placeholder="Channel name"></v-text-field>
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="primary" text @click="closeModal">取消</v-btn>
-                      <v-btn color="info" text @click="addChannel">新增頻道</v-btn>
+                      <!-- <v-btn color="primary" text @click="closeModal">取消</v-btn>
+                      <v-btn color="info" text @click="addChannel">新增頻道</v-btn> -->
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
