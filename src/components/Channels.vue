@@ -1,18 +1,13 @@
 <template>
-  <div>
-    <!-- Button trigger modal -->
-    <button @click="openModal()" type="button" class="btn btn-primary" >
-      新增頻道
-    </button>
-    <div class="mt-4">
+    <!-- <div class="mt-4">
       <button v-for="channel in channels" :key="channel.id" class="list-group-item list-group-item-action" type="button" :class="{'active': setActiveChannel(channel)}" @click="changeChannel(channel)">{{ channel.name }}</button>
       <span v-if="getNotification(channel) > 0 && channel.id !== currentChannel.id" class="float-right">{{ getNotification(channel) }}</span>
-    </div>
+    </div> -->
 
-    <v-card class="mx-auto" min-width="300">
+    <v-card class="mx-auto">
       <v-list>
         <v-list-item-group color="primary">
-          <v-list-item v-for="channel in channels" :key="channel.id" >
+          <v-list-item v-for="channel in channels" :key="channel.id" @click="changeChannel(channel)">
             <v-list-item-content>
               <v-list-item-title>{{ channel.name }}</v-list-item-title>
             </v-list-item-content>
@@ -21,40 +16,12 @@
       </v-list>
     </v-card>
 
-    <!-- Modal -->
-    <div class="modal fade" id="channelModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <input v-model="new_channel" type="text" id="new_channel" name="new_channel" placeholder="Channel name" class="form-control">
-              </div>
-              <ul class="list-group" v-if="hasErrors">
-                <li class="list-group-item text-danger" v-for="error in errors" :key="error.id">{{ error }}</li>
-              </ul>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button @click="closeModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-            <button @click="addChannel" type="button" class="btn btn-primary">新增頻道</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
 import firebase from 'firebase'
-// import database from 'firebase/database'
 import { mapGetters } from 'vuex'
 import mixin from '../mixins'
-import $ from 'jquery'
 
 export default {
   name: 'channels',
@@ -84,12 +51,6 @@ export default {
     }
   },
   methods: {
-    openModal () {
-      $('#channelModal').modal('show')
-    },
-    closeModal () {
-      $('#channelModal').modal('hide')
-    },
     addChannel () {
       this.errors = []
       const key = this.channelsRef.push().key

@@ -22,6 +22,8 @@ import { mapGetters } from 'vuex'
 import FileModal from './FileModal'
 import firebase from 'firebase'
 import $ from 'jquery'
+// import uuidV4 from 'uuid/V4'
+import { v4 as uuidv4 } from 'uuid'
 
 export default {
   name: 'message-form',
@@ -33,10 +35,9 @@ export default {
       storageRef: firebase.storage().ref(),
       messagesRef: firebase.database().ref('messages'),
       privateMessagesRef: firebase.database().ref('privateMessages'),
-      uploadTask: null,
-      uploadState: null,
-      image: null,
-      imageURL: ''
+      uploadTask: null
+      // image: null,
+      // imageURL: ''
     }
   },
   computed: {
@@ -63,8 +64,9 @@ export default {
         this.message = ''
       }
     },
-    sentPhoto (fileUrl) {
+    sendPhoto (fileUrl) {
       const photoMessage = {
+        content: null,
         timestamp: firebase.database.ServerValue.TIMESTAMP,
         user: {
           name: this.currentUser.displayName,
@@ -80,26 +82,35 @@ export default {
         } else {
           this.messagesRef.child(this.currentChannel.id).push().set(photoMessage)
         }
-        this.photoMessage = ''
+        this.fileUrl = ''
       }
     },
-    uploadFile (file) {
+    uploadFile (file, metadata) {
       if (file === null) return false
       const pathToUpload = this.currentChannel.id
       const ref = this.getMessagesRef()
-      // 路徑
-      const filePath = this.getPath() + '/' + '.jpg'
+      // 取名稱
+      const filePath = this.getPath() + '/' + uuidv4() + '.jpg'
 
-      this.uploadTask = this.storageRef.child(filePath).put(file)
-      this.uploadState = 'uploading'
-      // recover the url of file
-      this.uploadTask.snapshot.ref.getDownloadURL().then(fileUrl => {
-        this.sendFileMessage(fileUrl, ref, pathToUpload)
+      this.uploadTask = this.storageRef.child(filePath).put(file, metadata)
+      this.uploadTask.on('state_changed', snapshot => {
+      }, error => {
+        // error
+        this.errors.push(error.message)
+        this.uploadTask = null
+        // reset form
+        this.$refs.file_modal.resetForm()
+      }, () => {
+        // reset form
+        this.$refs.file_modal.resetForm()
+        // recover the url of file
+        this.uploadTask.snapshot.ref.getDownloadURL().then(fileUrl => {
+          this.sendFileMessage(fileUrl, ref, pathToUpload)
+        })
       })
-      this.$refs.file_modal.resetForm()
     },
     sendFileMessage (fileUrl, ref, pathToUpload) {
-      ref.child(pathToUpload).push().set(this.sentPhoto(fileUrl)).then(() => {
+      ref.child(pathToUpload).push().set(this.sendPhoto(fileUrl)).then(() => {
         this.$nextTick(() => {
           $('html, body').scrollTop($(document).height())
         })

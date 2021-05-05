@@ -9,7 +9,6 @@
 <script>
 import SingleMessage from './SingleMessage'
 import MessageForm from './MessageForm'
-// import database from 'firebase/database'
 import { mapGetters } from 'vuex'
 import firebase from 'firebase'
 // import $ from 'jquery'

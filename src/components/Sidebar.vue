@@ -1,8 +1,7 @@
 <template>
-  <v-card class="" min-width="300" tile>
-      <v-navigation-drawer permanent>
+  <v-card class="" tile>
+      <v-navigation-drawer permanent height="100%">
         <v-system-bar>
-          <h2 class="text-light">Chat</h2>
         </v-system-bar>
         <v-list>
           <v-list-item>
@@ -37,34 +36,41 @@
               <v-list-item-content >
                 <v-list-item-title >Add Channel</v-list-item-title>
               </v-list-item-content>
-
-              <!-- modal -->
-              <div class="text-center">
-                <v-dialog v-show="dialog = true" width="500">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="red lighten-2" dark v-bind="attrs" v-on="on"> Click Me</v-btn>
-                  </template>
-                  <v-card>
-                    <v-card-title class="headline grey lighten-2">輸入頻道名稱</v-card-title>
-                    <v-card-text >
-                      <v-text-field placeholder="Channel name"></v-text-field>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <!-- <v-btn color="primary" text @click="closeModal">取消</v-btn>
-                      <v-btn color="info" text @click="addChannel">新增頻道</v-btn> -->
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
+              <!-- Button trigger modal -->
+              <button @click="openModal()" type="button" class="btn btn-primary" >
+                新增頻道
+              </button>
+              <!-- Modal -->
+              <div class="modal fade" id="channelModal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Modal title</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div class="form-group">
+                          <input v-model="new_channel" type="text" id="new_channel" name="new_channel" placeholder="Channel name" class="form-control">
+                        </div>
+                        <ul class="list-group" v-if="hasErrors">
+                          <li class="list-group-item text-danger" v-for="error in errors" :key="error.id">{{ error }}</li>
+                        </ul>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button @click="closeModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                      <button @click="addChannel" type="button" class="btn btn-primary">新增頻道</button>
+                    </div>
+                  </div>
+                </div>
               </div>
-
             </v-list-item>
             <Channels/>
+            <Users/>
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>
-
-      <Users/>
   </v-card>
 </template>
 
@@ -83,7 +89,6 @@ export default {
       selectedItem: 0,
       items: [
         { text: 'My Files', icon: 'mdi-folder' },
-        { text: 'Shared with me', icon: 'mdi-account-multiple' },
         { text: 'Starred', icon: 'mdi-star' },
         { text: 'Recent', icon: 'mdi-history' },
         { text: 'Offline', icon: 'mdi-check-circle' },
@@ -96,6 +101,12 @@ export default {
     ...mapGetters(['currentUser'])
   },
   methods: {
+    openModal () {
+      $('#channelModal').modal('show')
+    },
+    closeModal () {
+      $('#channelModal').modal('hide')
+    },
     logout () {
       this.presenceRef.child(this.currentUser.uid).remove()
       firebase.auth().signOut()

@@ -25,9 +25,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import mime from 'mime-types'
-import $ from 'jquery'
 
 export default {
   name: 'file-modal',
@@ -36,9 +34,6 @@ export default {
       file: null,
       authorized: ['image/jpeg', 'image/jpg', 'image/png']
     }
-  },
-  computed: {
-    ...mapGetters(['currentChannel', 'currentUser', 'isPrivate'])
   },
   methods: {
     isValid (filename) {
@@ -51,19 +46,19 @@ export default {
         this.file = files[0]
       }
     },
-    // sendFile () {
-    //   if (this.file !== null) {
-    //     if (this.isValid(this.file.name)) {
-    //       const metadata = { contentType: mime.lookup(this.file.name) }
-    //       this.$parent.uploadFile(this.file, metadata)
-    //       $('#fileModal').modal('hide')
-    //     }
-    //   }
-    // },
     sendFile () {
-      this.$parent.uploadFile(this.file)
-      $('#fileModal').modal('hide')
+      if (this.file !== null) {
+        if (this.isValid(this.file.name)) {
+          const metadata = { contentType: mime.lookup(this.file.name) }
+          this.$parent.uploadFile(this.file, metadata)
+          $('#fileModal').modal('hide')
+        }
+      }
     },
+    // sendFile () {
+    //   this.$parent.uploadFile(this.file)
+    //   $('#fileModal').modal('hide')
+    // },
     resetForm () {
       $('.form').trigger('reset')
       this.file = null
