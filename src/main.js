@@ -2,14 +2,15 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import firebase from 'firebase/app'
-// eslint-disable-next-line no-unused-vars
-// import auth from 'firebase/auth'
 import store from './store'
 import $ from 'jquery'
 import 'bootstrap'
 import vuetify from './plugins/vuetify'
-// import { $, jQuery } from 'jquery'
-// export for others scripts to use
+import VueChatScroll from 'vue-chat-scroll'
+
+Vue.prototype.$bus = new Vue()
+Vue.use(VueChatScroll)
+
 window.$ = $
 // window.jQuery = jQuery
 

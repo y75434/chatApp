@@ -4,18 +4,18 @@
       <span v-if="getNotification(channel) > 0 && channel.id !== currentChannel.id" class="float-right">{{ getNotification(channel) }}</span>
     </div> -->
 
-    <v-card class="mx-auto">
-      <v-list>
-        <v-list-item-group color="primary">
-          <v-list-item v-for="channel in channels" :key="channel.id" @click="changeChannel(channel)">
-            <v-list-item-content>
-              <v-list-item-title>{{ channel.name }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
-    </v-card>
-
+    <span>
+      <v-list-item v-for="channel in channels" :key="channel.id" @click="changeChannel(channel)" link >
+        <v-list-item-action  style="margin-right:5px">
+          <v-icon class="white--text ">mdi-pound</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title class="white--text ">
+            {{ channel.name }}
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </span>
 </template>
 
 <script>
@@ -27,8 +27,8 @@ export default {
   name: 'channels',
   data () {
     return {
-      new_channel: '',
-      errors: [],
+      // new_channel: '',
+      // errors: [],
       channelsRef: firebase.database().ref('channels'),
       messagesRef: firebase.database().ref('messages'),
       notifCount: [],
@@ -38,10 +38,10 @@ export default {
   },
   mixins: [mixin],
   computed: {
-    ...mapGetters(['currentChannel', 'isPrivate']),
-    hasErrors () {
-      return this.errors.length > 0
-    }
+    ...mapGetters(['currentChannel', 'isPrivate'])
+    // hasErrors () {
+    //   return this.errors.length > 0
+    // }
   },
   watch: {
     isPrivate () {
@@ -51,21 +51,20 @@ export default {
     }
   },
   methods: {
-    addChannel () {
-      this.errors = []
-      const key = this.channelsRef.push().key
-      const newChannel = { id: key, name: this.new_channel }
-      console.log(newChannel)
-      this.channelsRef.child(key).update(newChannel)
-        .then(() => {
-          this.$store.dispatch('setCurrentChannel', newChannel)
-          this.new_channel = ''
-          $('#channelModal').modal('hide')
-        })
-        .catch((error) => {
-          this.errors.push(error.message)
-        })
-    },
+    // addChannel () {
+    //   this.errors = []
+    //   const key = this.channelsRef.push().key
+    //   const newChannel = { id: key, name: this.new_channel }
+    //   this.channelsRef.child(key).update(newChannel)
+    //     .then(() => {
+    //       this.$store.dispatch('setCurrentChannel', newChannel)
+    //       this.new_channel = ''
+    //       $('#channelModal').modal('hide')
+    //     })
+    //     .catch((error) => {
+    //       this.errors.push(error.message)
+    //     })
+    // },
     addListeners () {
       this.channelsRef.on('child_added', snapshot => {
         this.channels.push(snapshot.val())

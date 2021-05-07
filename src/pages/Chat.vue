@@ -1,10 +1,10 @@
 <template>
-  <v-container>
-    <v-row >
+  <v-container class="fill-height" fluid permanent>
+    <v-row align="center" justify="center">
       <v-col cols="12" sm="4" md="4">
         <Sidebar/>
       </v-col>
-      <v-col cols="12" sm="8" md="8">
+      <v-col cols="12" sm="8" md="8" >
         <Messages/>
       </v-col>
     </v-row>

@@ -13,16 +13,18 @@
   </v-list-item> -->
   <div>
     <v-list-item v-for="user in users" :key="user.id" @click.prevent="changeChannel(user)">
-      <v-img :src="user.avatar" height="10" class=""></v-img>
+      <v-list-item-avatar>
+        <v-img :src="user.avatar" class=""></v-img>
+      </v-list-item-avatar>
+      <v-icon class="white--text">mdi-account-multiple</v-icon>
       <v-list-item-content>
-        <v-list-item-title>{{ user.name }}</v-list-item-title>
+        <v-list-item-title class="white--text">{{ user.name }}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
   </div>
 </template>
 
 <script>
-// import database from 'firebase/database'
 import { mapGetters } from 'vuex'
 import mixin from '../mixins'
 import firebase from 'firebase'

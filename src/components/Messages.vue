@@ -1,6 +1,12 @@
 <template>
-  <v-card>
-    <h2>{{ channelName }}</h2>
+  <v-card permanent>
+    <v-app-bar color="deep-white accent-4" dense>
+      <v-toolbar-title><v-icon>mdi-pound</v-icon>{{ channelName }}</v-toolbar-title>
+        <v-btn icon><v-icon>mdi-star-outline</v-icon></v-btn>
+          <v-spacer></v-spacer>
+          <v-btn icon><v-icon>mdi-information-outline</v-icon></v-btn>
+      Details
+    </v-app-bar>
     <SingleMessage :messages="messages"></SingleMessage>
     <MessageForm/>
   </v-card>

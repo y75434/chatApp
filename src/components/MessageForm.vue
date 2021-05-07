@@ -13,6 +13,15 @@
         </div>
       </form>
       <file-modal ref="file_modal"></file-modal>
+      <!-- <div class="footer">
+        <v-footer>
+          <v-col cols="12">
+            <v-text-field append-icon="mdi-paperclip" filled clear-icon="mdi-close-circle" clearable label="Message" type="text" v-model="message"  v-on:keyup.enter="sendMessage" @click:append="click1"></v-text-field>
+              <input type="file" style="display: none">
+              <input type="file" style="display: none">
+                </v-col>
+        </v-footer>
+      </div> -->
     </div>
   </div>
 </template>
