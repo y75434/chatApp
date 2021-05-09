@@ -71,4 +71,7 @@ export default {
         border-left: 5px solid red;
         padding: 0 10px;
     }
+    .v-sheet.v-card:not(.v-sheet--outlined) {
+    box-shadow: none;
+    }
 </style>

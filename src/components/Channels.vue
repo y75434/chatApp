@@ -1,18 +1,22 @@
 <template>
-    <!-- <div class="mt-4">
-      <button v-for="channel in channels" :key="channel.id" class="list-group-item list-group-item-action" type="button" :class="{'active': setActiveChannel(channel)}" @click="changeChannel(channel)">{{ channel.name }}</button>
-      <span v-if="getNotification(channel) > 0 && channel.id !== currentChannel.id" class="float-right">{{ getNotification(channel) }}</span>
-    </div> -->
+    <!--
+      <span v-if="getNotification(channel) > 0 && channel.id !== currentChannel.id">{{ getNotification(channel) }}</span>
+     -->
 
     <span>
-      <v-list-item v-for="channel in channels" :key="channel.id" @click="changeChannel(channel)" link >
+      <v-list-item v-for="channel in channels" :key="channel.id" @click="changeChannel(channel)">
         <v-list-item-action  style="margin-right:5px">
           <v-icon class="white--text ">mdi-pound</v-icon>
         </v-list-item-action>
-        <v-list-item-content>
-          <v-list-item-title class="white--text ">
+
+        <v-list-item-content inline>
+          <v-list-item-title class="white--text" >
             {{ channel.name }}
+            <v-badge class="white--text" color="red" v-if="channel.id !== currentChannel.id" :content="1" :value="1"></v-badge>
           </v-list-item-title>
+          <!-- <span class="white--text" v-if="channel.id !== currentChannel.id" >
+              {{ getNotification(channel) }}
+          </span> -->
         </v-list-item-content>
       </v-list-item>
     </span>
@@ -27,8 +31,8 @@ export default {
   name: 'channels',
   data () {
     return {
-      // new_channel: '',
-      // errors: [],
+      new_channel: '',
+      errors: [],
       channelsRef: firebase.database().ref('channels'),
       messagesRef: firebase.database().ref('messages'),
       notifCount: [],
@@ -51,20 +55,20 @@ export default {
     }
   },
   methods: {
-    // addChannel () {
-    //   this.errors = []
-    //   const key = this.channelsRef.push().key
-    //   const newChannel = { id: key, name: this.new_channel }
-    //   this.channelsRef.child(key).update(newChannel)
-    //     .then(() => {
-    //       this.$store.dispatch('setCurrentChannel', newChannel)
-    //       this.new_channel = ''
-    //       $('#channelModal').modal('hide')
-    //     })
-    //     .catch((error) => {
-    //       this.errors.push(error.message)
-    //     })
-    // },
+    addChannel () {
+      this.errors = []
+      const key = this.channelsRef.push().key
+      const newChannel = { id: key, name: this.new_channel }
+      this.channelsRef.child(key).update(newChannel)
+        .then(() => {
+          this.$store.dispatch('setCurrentChannel', newChannel)
+          this.new_channel = ''
+          $('#channelModal').modal('hide')
+        })
+        .catch((error) => {
+          this.errors.push(error.message)
+        })
+    },
     addListeners () {
       this.channelsRef.on('child_added', snapshot => {
         this.channels.push(snapshot.val())
@@ -81,6 +85,28 @@ export default {
         this.handleNotifications(channelId, this.currentChannel.id, this.notifCount, snapshot)
       })
     },
+    handleNotifications (channelId, currentChannelId, notifCount, snapshot) {
+      // 確認頻道是否加入通知陣列
+      let lastTotal = 0
+      const index = notifCount.findIndex(el => el.id === channelId)
+      if (index !== -1) {
+        if (channelId !== currentChannelId) {
+          lastTotal = notifCount[index].total
+          if (snapshot.numChildren() - lastTotal > 0) {
+            notifCount[index].notif = snapshot.numChildren() - lastTotal
+          }
+        }
+        notifCount[index].lastKnownTotal = snapshot.numChildren()
+      } else {
+        notifCount.push({
+          // 加入到通知陣列中
+          id: channelId,
+          total: snapshot.numChildren(),
+          lastKnownTotal: snapshot.numChildren(),
+          notif: 0
+        })
+      }
+    },
     getNotification (channel) {
       let notif = 0
       this.notifCount.forEach(el => {
@@ -90,10 +116,10 @@ export default {
       })
       return notif
     },
-
-    setActiveChannel (channel) {
-      return channel.id === this.currentChannel.id
-    },
+    // 目前頻道
+    // setActiveChannel (channel) {
+    //   return channel.id === this.currentChannel.id
+    // },
     changeChannel (channel) {
       // 重新設定通知
       this.resetNotifications()
@@ -102,6 +128,7 @@ export default {
       this.$store.dispatch('setCurrentChannel', channel)
       this.channel = channel
     },
+    // 通知歸0
     resetNotifications () {
       const index = this.notifCount.findIndex(el => el.id === this.channel.id)
       if (index !== -1) {

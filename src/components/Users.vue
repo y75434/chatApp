@@ -1,24 +1,13 @@
 <template>
-  <!-- <v-list-item>
-    <button v-for="user in users" :key="user.id" class="list-group-item list-group-item-action" type="button" :class="{'active': isActive(user)}" @click.prevent="changeChannel(user)">
-      <span :class="{'fa fa-circle online': isOnline(user), 'fa fa-circle offline': !isOnline(user)}"></span>
-      <span>
-        <img :src="user.avatar" height="40" class="img rounded-circle">
-        <span>
-          <a :class="{'text-light': isActive(user)}">{{ user.name }}</a>
-          <span class="float-right" v-if="getNotification(user) >= 1">{{ getNotification(user) }}</span>
-        </span>
-      </span>
-    </button>
-  </v-list-item> -->
+
   <div>
     <v-list-item v-for="user in users" :key="user.id" @click.prevent="changeChannel(user)">
       <v-list-item-avatar>
         <v-img :src="user.avatar" class=""></v-img>
       </v-list-item-avatar>
-      <v-icon class="white--text">mdi-account-multiple</v-icon>
       <v-list-item-content>
         <v-list-item-title class="white--text">{{ user.name }}</v-list-item-title>
+        <span class="float-right" v-if="getNotification(user) >= 1">{{ getNotification(user) }}</span>
       </v-list-item-content>
     </v-list-item>
   </div>
@@ -35,7 +24,6 @@ export default {
     return {
       users: [],
       usersRef: firebase.database().ref('users'),
-      connectedRef: firebase.database().ref('.info/connected'),
       presenceRef: firebase.database().ref('presence'),
       privateMessagesRef: firebase.database().ref('privateMessages'),
       notifCount: [],
@@ -56,48 +44,30 @@ export default {
   methods: {
     addListeners () {
       this.usersRef.on('child_added', (snapshot) => {
+        // 顯示除了自己以外的用戶
         if (this.currentUser.uid !== snapshot.key) {
           const user = snapshot.val()
           user.uid = snapshot.key
-          user.status = 'offline'
           this.users.push(user)
         }
       })
 
-      this.presenceRef.on('child_added', snapshot => {
-        if (this.currentUser.uid !== snapshot.key) {
-          this.addStatusToUser(snapshot.key)
-          const channelId = this.getChannelId(snapshot.key)
-          this.privateMessagesRef.child(channelId).on('value', snapshot => {
-            this.handleNotifications(channelId, this.currentChannel.id, this.notifCount, snapshot)
-          })
-        }
-      })
+      // this.presenceRef.on('child_added', snapshot => {
+      //   if (this.currentUser.uid !== snapshot.key) {
+      //     this.addStatusToUser(snapshot.key)
+      //     const channelId = this.getChannelId(snapshot.key)
+      //     this.privateMessagesRef.child(channelId).on('value', snapshot => {
+      //       this.handleNotifications(channelId, this.currentChannel.id, this.notifCount, snapshot)
+      //     })
+      //   }
+      // })
 
-      this.presenceRef.on('child_removed', snapshot => {
-        if (this.currentUser.uid !== snapshot.key) {
-          this.addStatusToUser(snapshot.key, false)
-          this.privateMessagesRef.child(this.getChannelId(snapshot.key)).off()
-        }
-      })
-      // 紀錄用戶是否上線
-      this.connectedRef.on('value', snapshot => {
-        if (snapshot.val() === true) {
-          const ref = this.presenceRef.child(this.currentUser.uid)
-          ref.set(true)
-          ref.onDisconnect().remove()
-        }
-      })
-    },
-    // 用戶狀態
-    addStatusToUser (userId, connected = true) {
-      const index = this.users.findIndex(user => user.uid === userId)
-      if (index !== -1) {
-        connected === true ? this.users[index].status = 'online' : this.users[index].status = 'offline'
-      }
-    },
-    isOnline (user) {
-      return user.status === 'online'
+      // this.presenceRef.on('child_removed', snapshot => {
+      //   if (this.currentUser.uid !== snapshot.key) {
+      //     this.addStatusToUser(snapshot.key, false)
+      //     this.privateMessagesRef.child(this.getChannelId(snapshot.key)).off()
+      //   }
+      // })
     },
     // 計算有幾個通知
     getNotification (user) {
@@ -126,8 +96,7 @@ export default {
     },
     detachListeners () {
       this.usersRef.off()
-      this.presenceRef.off()
-      this.connectedRef.off()
+      // this.presenceRef.off()
 
       this.channels.forEach(el => {
         this.messagesRef.child(el.id).off()

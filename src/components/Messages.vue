@@ -1,15 +1,15 @@
 <template>
-  <v-card permanent>
-    <v-app-bar color="deep-white accent-4" dense>
-      <v-toolbar-title><v-icon>mdi-pound</v-icon>{{ channelName }}</v-toolbar-title>
-        <v-btn icon><v-icon>mdi-star-outline</v-icon></v-btn>
-          <v-spacer></v-spacer>
-          <v-btn icon><v-icon>mdi-information-outline</v-icon></v-btn>
-      Details
-    </v-app-bar>
-    <SingleMessage :messages="messages"></SingleMessage>
-    <MessageForm/>
-  </v-card>
+  <v-col cols="12" sm="8" md="8" >
+    <v-card>
+      <v-app-bar color="deep-white accent-4" dense>
+        <v-toolbar-title><v-icon>mdi-pound</v-icon>{{ channelName }}</v-toolbar-title>
+          <v-btn icon><v-icon>mdi-star-outline</v-icon></v-btn>
+            <v-spacer></v-spacer>
+      </v-app-bar>
+      <SingleMessage :messages="messages"></SingleMessage>
+      <MessageForm/>
+    </v-card>
+  </v-col>
 </template>
 
 <script>
@@ -17,7 +17,6 @@ import SingleMessage from './SingleMessage'
 import MessageForm from './MessageForm'
 import { mapGetters } from 'vuex'
 import firebase from 'firebase'
-// import $ from 'jquery'
 
 export default {
   name: 'messages',
@@ -35,7 +34,7 @@ export default {
     ...mapGetters(['currentChannel', 'currentUser', 'isPrivate']),
     channelName () {
       if (this.channel !== null) {
-        return this.isPrivate ? '@ ' + this.channel.name : '# ' + this.channel.name
+        return this.channel.name
       } else {
         return 'Welcome'
       }
@@ -58,9 +57,9 @@ export default {
         message.id = snapshot.key
         this.messages.push(message)
         // 移動到最上層
-        // this.$nextTick(() => {
-        //   $('html, body').scrollTop($(document).height())
-        // })
+        this.$nextTick(() => {
+          $('html, body').scrollTop($(document).height())
+        })
       })
       // 傳送參數到事件
       this.addToListeners(this.currentChannel.id, ref, 'child_added')
@@ -79,9 +78,6 @@ export default {
       })
       this.listeners = []
       this.messages = []
-      // if (this.channel !== null) {
-      //   this.messagesRef.child(this.channel.id).off()
-      // }
     },
     // 在群組還是在私人訊息
     getMessagesRef  () {

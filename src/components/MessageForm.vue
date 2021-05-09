@@ -31,7 +31,6 @@ import { mapGetters } from 'vuex'
 import FileModal from './FileModal'
 import firebase from 'firebase'
 import $ from 'jquery'
-// import uuidV4 from 'uuid/V4'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
