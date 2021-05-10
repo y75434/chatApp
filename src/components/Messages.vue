@@ -1,12 +1,12 @@
 <template>
-  <v-col cols="12" sm="8" md="8" >
+  <v-col cols="12" sm="8" md="8" class="py-0">
     <v-card>
       <v-app-bar color="deep-white accent-4" dense>
         <v-toolbar-title><v-icon>mdi-pound</v-icon>{{ channelName }}</v-toolbar-title>
           <v-btn icon><v-icon>mdi-star-outline</v-icon></v-btn>
             <v-spacer></v-spacer>
       </v-app-bar>
-      <SingleMessage :messages="messages"></SingleMessage>
+      <SingleMessage :messages="messages" ></SingleMessage>
       <MessageForm/>
     </v-card>
   </v-col>

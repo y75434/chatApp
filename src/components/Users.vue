@@ -3,7 +3,7 @@
   <div>
     <v-list-item v-for="user in users" :key="user.id" @click.prevent="changeChannel(user)">
       <v-list-item-avatar>
-        <v-img :src="user.avatar" class=""></v-img>
+        <v-img :src="user.avatar" class="tile" ></v-img>
       </v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-title class="white--text">{{ user.name }}</v-list-item-title>
@@ -52,22 +52,22 @@ export default {
         }
       })
 
-      // this.presenceRef.on('child_added', snapshot => {
-      //   if (this.currentUser.uid !== snapshot.key) {
-      //     this.addStatusToUser(snapshot.key)
-      //     const channelId = this.getChannelId(snapshot.key)
-      //     this.privateMessagesRef.child(channelId).on('value', snapshot => {
-      //       this.handleNotifications(channelId, this.currentChannel.id, this.notifCount, snapshot)
-      //     })
-      //   }
-      // })
+      this.presenceRef.on('child_added', snapshot => {
+        if (this.currentUser.uid !== snapshot.key) {
+          this.addStatusToUser(snapshot.key)
+          const channelId = this.getChannelId(snapshot.key)
+          this.privateMessagesRef.child(channelId).on('value', snapshot => {
+            this.handleNotifications(channelId, this.currentChannel.id, this.notifCount, snapshot)
+          })
+        }
+      })
 
-      // this.presenceRef.on('child_removed', snapshot => {
-      //   if (this.currentUser.uid !== snapshot.key) {
-      //     this.addStatusToUser(snapshot.key, false)
-      //     this.privateMessagesRef.child(this.getChannelId(snapshot.key)).off()
-      //   }
-      // })
+      this.presenceRef.on('child_removed', snapshot => {
+        if (this.currentUser.uid !== snapshot.key) {
+          this.addStatusToUser(snapshot.key, false)
+          this.privateMessagesRef.child(this.getChannelId(snapshot.key)).off()
+        }
+      })
     },
     // 計算有幾個通知
     getNotification (user) {
@@ -82,6 +82,7 @@ export default {
     },
     resetNotifications (user = null) {
       let channelId = null
+
       if (user !== null) {
         channelId = this.getChannelId(user.uid)
       } else {
@@ -121,6 +122,7 @@ export default {
       const channelId = this.getChannelId(user.uid)
       return this.currentChannel.id === channelId
     },
+    // 我不懂這行要幹嘛
     getChannelId (userId) {
       return userId < this.currentUser.uid ? userId + '/' + this.currentUser.uid : this.currentUser.uid + '/' + userId
     }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="messageform">
-      <form @submit.prevent="sendMessage">
+      <!-- <form @submit.prevent="sendMessage">
         <div class="input-group mb-3">
           <input v-model.trim="message" name="message" id="message" class="form-control mt-3" placeholder="請輸入">
           <div class="input-group-append">
@@ -11,31 +11,56 @@
             <button @click.prevent="openFileModal" class="btn btn-warning mt-3" type="button">選擇照片</button>
           </div>
         </div>
-      </form>
+      </form> -->
+      <v-btn color="blue-grey" class="ma-2 white--text" fab @click="modal = true">
+        <v-icon dark>
+          mdi-cloud-upload
+        </v-icon>
+      </v-btn>
+      <!-- modal -->
+      <template>
+        <div class="text-center" >
+          <v-dialog  width="500" v-model = "modal">
+            <v-card>
+              <v-card-title class="headline grey lighten-2">上傳檔案</v-card-title>
+              <v-btn color="primary" link @click.prevent="openFileModal">選擇照片</v-btn>
+              <v-card-text >
+                <v-text-field placeholder="Channel name"></v-text-field>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" link @change="addFile">取消</v-btn>
+                <v-btn color="info" link @click="sendFile">傳送檔案</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
+      </template>
+
       <file-modal ref="file_modal"></file-modal>
-      <!-- <div class="footer">
+
+      <div class="footer">
         <v-footer>
           <v-col cols="12">
-            <v-text-field append-icon="mdi-paperclip" filled clear-icon="mdi-close-circle" clearable label="Message" type="text" v-model="message"  v-on:keyup.enter="sendMessage" @click:append="click1"></v-text-field>
-              <input type="file" style="display: none">
-              <input type="file" style="display: none">
+            <v-text-field filled clear-icon="mdi-close-circle" clearable placeholder="請輸入" type="text" v-model="message"  v-on:keyup.enter="sendMessage"></v-text-field>
                 </v-col>
         </v-footer>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import FileModal from './FileModal'
 import firebase from 'firebase'
 import $ from 'jquery'
 import { v4 as uuidv4 } from 'uuid'
+import FileModal from './FileModal'
 
 export default {
   name: 'message-form',
   components: { FileModal },
+
   data () {
     return {
       message: '',
@@ -43,7 +68,9 @@ export default {
       storageRef: firebase.storage().ref(),
       messagesRef: firebase.database().ref('messages'),
       privateMessagesRef: firebase.database().ref('privateMessages'),
-      uploadTask: null
+      uploadTask: null,
+      modal: false
+
       // image: null,
       // imageURL: ''
     }
@@ -96,15 +123,17 @@ export default {
     uploadFile (file, metadata) {
       if (file === null) return false
       const pathToUpload = this.currentChannel.id
+
       const ref = this.getMessagesRef()
       // 取名稱
       const filePath = this.getPath() + '/' + uuidv4() + '.jpg'
-
       this.uploadTask = this.storageRef.child(filePath).put(file, metadata)
+
       this.uploadTask.on('state_changed', snapshot => {
       }, error => {
         // error
         this.errors.push(error.message)
+
         this.uploadTask = null
         // reset form
         this.$refs.file_modal.resetForm()
@@ -134,7 +163,7 @@ export default {
       }
     },
     openFileModal () {
-      $('#fileModal').modal('show')
+      // $('#fileModal').modal('show')
     },
     // 在群組還是在私人訊息
     getMessagesRef  () {

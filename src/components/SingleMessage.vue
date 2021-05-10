@@ -15,27 +15,23 @@
       </div>
     </div> -->
 
-  <v-container class="" v-chat-scroll>
-      <v-row class="black--text"  align="center" v-for="message in messages" :key="message.id">
-        <v-col cols="12">
-          <v-card>
-            <v-list-item three-line>
-                <v-list-item-avatar size="50px" item>
-                  <v-img :src="message.user.avatar" alt="Avatar"></v-img>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                    <div><strong>{{message.user.name}} </strong> <span style="color:gray; font-size:12px"> {{ message.timestamp | fromNow }}</span> </div>
-                    <v-list-item-subtitle v-if="!isFile(message)" style="font-size:20px;color:black">{{message.content}}</v-list-item-subtitle>
-                    <v-list-item-subtitle v-else style="font-size:20px;color:black">
-                        <v-img  :src="message.image" />
-                    </v-list-item-subtitle>
-                </v-list-item-content>
-            </v-list-item>
-          </v-card>
-        </v-col>
-      </v-row>
+    <v-col v-for="message in messages" :key="message.id" cols="12" sm="12" md="8" v-chat-scroll>
+      <v-card>
+        <v-list-item three-line>
+            <v-list-item-avatar size="50px" item>
+              <v-img :src="message.user.avatar" alt="Avatar"></v-img>
+            </v-list-item-avatar>
+            <v-list-item-content>
+                <div><strong>{{message.user.name}} </strong> <span style="color:gray; font-size:12px"> {{ message.timestamp | fromNow }}</span> </div>
+                <v-list-item-subtitle v-if="!isFile(message)" style="font-size:20px;color:black">{{message.content}}</v-list-item-subtitle>
+                <v-list-item-subtitle v-else style="font-size:20px;color:black">
+                    <v-img  :src="message.image" />
+                </v-list-item-subtitle>
+            </v-list-item-content>
+        </v-list-item>
+      </v-card>
+    </v-col>
 
-    </v-container>
   </div>
 </template>
 

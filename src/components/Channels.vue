@@ -58,12 +58,13 @@ export default {
     addChannel () {
       this.errors = []
       const key = this.channelsRef.push().key
+
       const newChannel = { id: key, name: this.new_channel }
       this.channelsRef.child(key).update(newChannel)
         .then(() => {
           this.$store.dispatch('setCurrentChannel', newChannel)
           this.new_channel = ''
-          $('#channelModal').modal('hide')
+          // $('#channelModal').modal('hide')
         })
         .catch((error) => {
           this.errors.push(error.message)
@@ -85,28 +86,28 @@ export default {
         this.handleNotifications(channelId, this.currentChannel.id, this.notifCount, snapshot)
       })
     },
-    handleNotifications (channelId, currentChannelId, notifCount, snapshot) {
-      // 確認頻道是否加入通知陣列
-      let lastTotal = 0
-      const index = notifCount.findIndex(el => el.id === channelId)
-      if (index !== -1) {
-        if (channelId !== currentChannelId) {
-          lastTotal = notifCount[index].total
-          if (snapshot.numChildren() - lastTotal > 0) {
-            notifCount[index].notif = snapshot.numChildren() - lastTotal
-          }
-        }
-        notifCount[index].lastKnownTotal = snapshot.numChildren()
-      } else {
-        notifCount.push({
-          // 加入到通知陣列中
-          id: channelId,
-          total: snapshot.numChildren(),
-          lastKnownTotal: snapshot.numChildren(),
-          notif: 0
-        })
-      }
-    },
+    // handleNotifications (channelId, currentChannelId, notifCount, snapshot) {
+    //   // 確認頻道是否加入通知陣列
+    //   let lastTotal = 0
+    //   const index = notifCount.findIndex(el => el.id === channelId)
+    //   if (index !== -1) {
+    //     if (channelId !== currentChannelId) {
+    //       lastTotal = notifCount[index].total
+    //       if (snapshot.numChildren() - lastTotal > 0) {
+    //         notifCount[index].notif = snapshot.numChildren() - lastTotal
+    //       }
+    //     }
+    //     notifCount[index].lastKnownTotal = snapshot.numChildren()
+    //   } else {
+    //     notifCount.push({
+    //       // 加入到通知陣列中
+    //       id: channelId,
+    //       total: snapshot.numChildren(),
+    //       lastKnownTotal: snapshot.numChildren(),
+    //       notif: 0
+    //     })
+    //   }
+    // },
     getNotification (channel) {
       let notif = 0
       this.notifCount.forEach(el => {
@@ -117,9 +118,9 @@ export default {
       return notif
     },
     // 目前頻道
-    // setActiveChannel (channel) {
-    //   return channel.id === this.currentChannel.id
-    // },
+    setActiveChannel (channel) {
+      return channel.id === this.currentChannel.id
+    },
     changeChannel (channel) {
       // 重新設定通知
       this.resetNotifications()
@@ -138,7 +139,7 @@ export default {
     },
     detachListeners () {
       this.channelsRef.off()
-      this.channel.forEach(el => {
+      this.channels.forEach(el => {
         this.messagesRef.child(el.id).off()
       })
     }
