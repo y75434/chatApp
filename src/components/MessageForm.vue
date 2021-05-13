@@ -1,51 +1,18 @@
 <template>
   <div>
-    <div class="messageform">
-      <!-- <form @submit.prevent="sendMessage">
+    <div class="messageform ">
+      <form @submit.prevent="sendMessage">
         <div class="input-group mb-3">
           <input v-model.trim="message" name="message" id="message" class="form-control mt-3" placeholder="請輸入">
           <div class="input-group-append">
-            <button @click="sendMessage" class="btn btn-primary mt-3" type="button">傳送</button>
-          </div>
-          <div class="input-group-append">
-            <button @click.prevent="openFileModal" class="btn btn-warning mt-3" type="button">選擇照片</button>
+            <button @click="sendMessage" @keyup.enter="sendMessage" class="btn mt-3" type="button"><i class="far fa-paper-plane"></i></button>
+            <button @click.prevent="openFileModal" class="btn mt-3" type="button"><i class="fas fa-paperclip"></i></button>
           </div>
         </div>
-      </form> -->
-      <v-btn color="blue-grey" class="ma-2 white--text" fab @click="modal = true">
-        <v-icon dark>
-          mdi-cloud-upload
-        </v-icon>
-      </v-btn>
-      <!-- modal -->
-      <template>
-        <div class="text-center" >
-          <v-dialog  width="500" v-model = "modal">
-            <v-card>
-              <v-card-title class="headline grey lighten-2">上傳檔案</v-card-title>
-              <v-btn color="primary" link @click.prevent="openFileModal">選擇照片</v-btn>
-              <v-card-text >
-                <v-text-field placeholder="Channel name"></v-text-field>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" link @change="addFile">取消</v-btn>
-                <v-btn color="info" link @click="sendFile">傳送檔案</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </div>
-      </template>
+      </form>
 
       <file-modal ref="file_modal"></file-modal>
 
-      <div class="footer">
-        <v-footer>
-          <v-col cols="12">
-            <v-text-field filled clear-icon="mdi-close-circle" clearable placeholder="請輸入" type="text" v-model="message"  v-on:keyup.enter="sendMessage"></v-text-field>
-                </v-col>
-        </v-footer>
-      </div>
     </div>
   </div>
 </template>
@@ -68,11 +35,7 @@ export default {
       storageRef: firebase.storage().ref(),
       messagesRef: firebase.database().ref('messages'),
       privateMessagesRef: firebase.database().ref('privateMessages'),
-      uploadTask: null,
-      modal: false
-
-      // image: null,
-      // imageURL: ''
+      uploadTask: null
     }
   },
   computed: {
@@ -163,7 +126,7 @@ export default {
       }
     },
     openFileModal () {
-      // $('#fileModal').modal('show')
+      $('#fileModal').modal('show')
     },
     // 在群組還是在私人訊息
     getMessagesRef  () {

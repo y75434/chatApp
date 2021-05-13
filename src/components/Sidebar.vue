@@ -1,5 +1,5 @@
 <template>
-  <v-col cols="0" sm="4" md="4" class="py-0">
+  <v-col cols="0" sm="4" md="4" class="py-0" style="height: 100vh; width: 300px; position: fixed;">
       <v-list color="#4a154b">
         <v-list-item>
           <v-list-item-avatar>
@@ -84,7 +84,6 @@ export default {
     return {
       selectedItem: 0,
       items: [
-        { text: '對話串', icon: 'mdi-folder' },
         { text: '已加星號', icon: 'mdi-star' },
         { text: '提及與回應', icon: 'mdi-history' },
         { text: '已儲存項目', icon: 'mdi-upload' }

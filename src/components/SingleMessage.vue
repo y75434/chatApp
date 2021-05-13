@@ -1,22 +1,7 @@
 <template>
-  <div>
-    <!-- <div class="mt-3 mb-5 h-100">
-      <div v-for="message in messages" :key="message.id">
-        <div class="media">
-          <img :src="message.user.avatar" height="50" class="align-self-start mr-3">
-          <div class="media-body">
-            <h5 class="mt-0">
-              <a href="#">{{ message.user.name }}</a> - {{ message.timestamp | fromNow }}
-            </h5>
-            <p v-if="!isFile(message)" >{{ message.content }}</p>
-            <img v-else class="img img-responsive" height="200" :src="message.image" alt="image">
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-    <v-col v-for="message in messages" :key="message.id" cols="12" sm="12" md="8" v-chat-scroll>
-      <v-card>
+  <div >
+    <v-col v-for="message in messages" :key="message.id" cols="12" sm="12" md="8" >
+      <v-card class="fill-height">
         <v-list-item three-line>
             <v-list-item-avatar size="50px" item>
               <v-img :src="message.user.avatar" alt="Avatar"></v-img>
@@ -46,9 +31,10 @@ export default {
     ...mapGetters(['currentUser'])
   },
   methods: {
-    selfMessage (user) {
-      return user.id === this.currentUser.uid
-    },
+    // selfMessage (user) {
+    //   return user.id === this.currentUser.uid
+    // },
+    // 有檔案就沒有文字
     isFile (message) {
       return message.content == null
     }
@@ -63,10 +49,10 @@ export default {
 </script>
 
 <style scoped>
-    .self_message {
+    /* .self_message {
         border-left: 5px solid red;
         padding: 0 10px;
-    }
+    } */
     .v-sheet.v-card:not(.v-sheet--outlined) {
     box-shadow: none;
     }

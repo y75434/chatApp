@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- Modal -->
-    <!-- <div class="modal fade" id="fileModal">
+    <div class="modal fade" id="fileModal">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">上傳檔案</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button @click="closeModal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <form class="form">
@@ -16,11 +16,11 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button @click="sendFile" type="button" class="btn btn-primary">傳送檔案</button>
+            <button @click="sendFile" type="button" class="btn btn-danger text-white">傳送檔案</button>
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -55,10 +55,9 @@ export default {
         }
       }
     },
-    // sendFile () {
-    //   this.$parent.uploadFile(this.file)
-    //   $('#fileModal').modal('hide')
-    // },
+    closeModal () {
+      $('#fileModal').modal('hide')
+    },
     resetForm () {
       $('.form').trigger('reset')
       this.file = null
