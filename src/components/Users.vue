@@ -7,8 +7,9 @@
       </v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-title class="white--text">{{ user.name }}</v-list-item-title>
-        <span class="float-right" v-if="getNotification(user) >= 1">{{ getNotification(user) }}</span>
       </v-list-item-content>
+      <v-badge class="white--text ml-2" color="red" v-if="getNotification(user) >= 1" ></v-badge>
+      <v-badge class="white--text " color="transparent" style="inset: auto; top: -5px;right: -1px;" v-if="getNotification(user) >= 1">{{ getNotification(user)}}</v-badge>
     </v-list-item>
   </div>
 </template>
@@ -54,7 +55,7 @@ export default {
 
       this.presenceRef.on('child_added', snapshot => {
         if (this.currentUser.uid !== snapshot.key) {
-          this.addStatusToUser(snapshot.key)
+          // this.addStatusToUser(snapshot.key)
           const channelId = this.getChannelId(snapshot.key)
           this.privateMessagesRef.child(channelId).on('value', snapshot => {
             this.handleNotifications(channelId, this.currentChannel.id, this.notifCount, snapshot)
@@ -64,7 +65,7 @@ export default {
 
       this.presenceRef.on('child_removed', snapshot => {
         if (this.currentUser.uid !== snapshot.key) {
-          this.addStatusToUser(snapshot.key, false)
+          // this.addStatusToUser(snapshot.key, false)
           this.privateMessagesRef.child(this.getChannelId(snapshot.key)).off()
         }
       })

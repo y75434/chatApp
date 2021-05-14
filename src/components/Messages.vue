@@ -1,7 +1,7 @@
 <template>
   <v-col cols="12" sm="8" md="8" class="py-0 " style=" margin-left: 300px;">
     <v-container >
-      <v-app-bar color="deep-white accent-4" dense>
+      <v-app-bar color="deep-white accent-4" style="z-index:10" dense>
         <v-toolbar-title><v-icon>mdi-pound</v-icon>{{ channelName }}</v-toolbar-title>
           <v-btn icon><v-icon>mdi-star-outline</v-icon></v-btn>
             <v-spacer></v-spacer>

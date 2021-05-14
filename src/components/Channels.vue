@@ -4,20 +4,19 @@
      -->
 
     <span>
-      <v-list-item v-for="channel in channels" :key="channel.id" @click="changeChannel(channel)">
-        <v-list-item-action  style="margin-right:5px">
+      <v-list-item class="d-flex" v-for="channel in channels" :key="channel.id" @click="changeChannel(channel)">
+        <v-list-item-icon  >
           <v-icon class="white--text ">mdi-pound</v-icon>
-        </v-list-item-action>
+        </v-list-item-icon>
 
         <v-list-item-content inline>
-          <v-list-item-title class="white--text" >
-            {{ channel.name }}
-            <v-badge class="white--text" color="red" v-if="channel.id !== currentChannel.id" :content="1" :value="1"></v-badge>
-          </v-list-item-title>
-          <!-- <span class="white--text" v-if="channel.id !== currentChannel.id" >
-              {{ getNotification(channel) }}
-          </span> -->
+          <v-list-item-title class="white--text" >{{ channel.name }}</v-list-item-title>
+          <!-- <v-badge class="white--text ml-1" color="red" v-if="getNotification(channel) > 0 && channel.id !== currentChannel.id" ></v-badge>
+          <v-badge class="white--text " color="transparent" style="inset: auto;" v-if="getNotification(channel) > 0 && channel.id !== currentChannel.id" >{{ getNotification(channel)}}</v-badge> -->
         </v-list-item-content>
+
+        <!-- <v-badge class="white--text ml-1 align-items-center" color="red"  ></v-badge>
+        <v-badge class="white--text " color="transparent" style="inset: auto; top: -5px;right: -1px;" >{{ getNotification(channel)}}</v-badge> -->
       </v-list-item>
     </span>
 </template>
@@ -86,28 +85,28 @@ export default {
         this.handleNotifications(channelId, this.currentChannel.id, this.notifCount, snapshot)
       })
     },
-    // handleNotifications (channelId, currentChannelId, notifCount, snapshot) {
-    //   // 確認頻道是否加入通知陣列
-    //   let lastTotal = 0
-    //   const index = notifCount.findIndex(el => el.id === channelId)
-    //   if (index !== -1) {
-    //     if (channelId !== currentChannelId) {
-    //       lastTotal = notifCount[index].total
-    //       if (snapshot.numChildren() - lastTotal > 0) {
-    //         notifCount[index].notif = snapshot.numChildren() - lastTotal
-    //       }
-    //     }
-    //     notifCount[index].lastKnownTotal = snapshot.numChildren()
-    //   } else {
-    //     notifCount.push({
-    //       // 加入到通知陣列中
-    //       id: channelId,
-    //       total: snapshot.numChildren(),
-    //       lastKnownTotal: snapshot.numChildren(),
-    //       notif: 0
-    //     })
-    //   }
-    // },
+    handleNotifications (channelId, currentChannelId, notifCount, snapshot) {
+      // 確認頻道是否加入通知陣列
+      let lastTotal = 0
+      const index = notifCount.findIndex(el => el.id === channelId)
+      if (index !== -1) {
+        if (channelId !== currentChannelId) {
+          lastTotal = notifCount[index].total
+          if (snapshot.numChildren() - lastTotal > 0) {
+            notifCount[index].notif = snapshot.numChildren() - lastTotal
+          }
+        }
+        notifCount[index].lastKnownTotal = snapshot.numChildren()
+      } else {
+        notifCount.push({
+          // 加入到通知陣列中
+          id: channelId,
+          total: snapshot.numChildren(),
+          lastKnownTotal: snapshot.numChildren(),
+          notif: 0
+        })
+      }
+    },
     getNotification (channel) {
       let notif = 0
       this.notifCount.forEach(el => {

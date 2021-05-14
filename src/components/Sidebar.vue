@@ -1,6 +1,6 @@
 <template>
-  <v-col cols="0" sm="4" md="4" class="py-0" style="height: 100vh; width: 300px; position: fixed;">
-      <v-list color="#4a154b">
+  <v-col cols="0" sm="4" md="4" class="py-0" style="overflow-y: auto; height: 90vh; width: 300px; position: fixed;">
+      <v-list color="#4a154b" style="">
         <v-list-item>
           <v-list-item-avatar>
             <v-img :src="currentUser.photoURL"></v-img>
@@ -20,7 +20,7 @@
             </v-list-item-content>
         </v-list-item>
       </v-list>
-      <v-list color="#4a154b" >
+      <v-list color="#4a154b">
         <v-list-item-group v-model="selectedItem" >
           <v-list-item v-for="(item, i) in items" :key="i" >
             <v-list-item-icon>
