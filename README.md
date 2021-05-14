@@ -1,25 +1,25 @@
-## chartApp
+# chartApp
 
 
-### Demo
+## Demo
 
-https://y75434.github.io/chatApp/#/
+https://chat-8de40.web.app/
 
+## 使用技術
 
-### 使用技術
-
-Vue Cli 
-Vuex
-VueRouter
-VueComponents
-API
-RWD
-Bootstrap4
-jQuery
-JavaScript
+- Firebase
+- Vuetify
+- Vue Cli 
+- Vuex
+- VueRouter
 
 
 
+## 功能介紹
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- 傳遞訊息
+- 新增頻道
+- 上傳檔案
+- 顯示未讀訊息通知
+
+
