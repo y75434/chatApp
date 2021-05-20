@@ -53,6 +53,7 @@ export default {
     addListeners () {
       // 監聽目前在哪個頁面
       const ref = this.getMessagesRef()
+      // on(隨時監聽
       ref.child(this.currentChannel.id).on('child_added', (snapshot) => {
         const message = snapshot.val()
         message.id = snapshot.key

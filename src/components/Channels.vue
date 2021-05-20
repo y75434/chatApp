@@ -137,6 +137,7 @@ export default {
       }
     },
     detachListeners () {
+      // 要注意的是在元件離開使用的時候要記得加上一個off事件把 firebase connect的方法移除
       this.channelsRef.off()
       this.channels.forEach(el => {
         this.messagesRef.child(el.id).off()
