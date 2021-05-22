@@ -1,6 +1,6 @@
 <template>
   <div >
-    <v-col v-for="message in messages" :key="message.id" cols="12" sm="12" md="8" >
+    <v-col v-for="message in messages" :key="message.id" cols="12" sm="12" md="8"  v-chat-scroll>
       <v-card class="fill-height">
         <v-list-item three-line>
             <v-list-item-avatar size="50px" item>

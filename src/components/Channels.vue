@@ -11,12 +11,10 @@
 
         <v-list-item-content inline>
           <v-list-item-title class="white--text" >{{ channel.name }}</v-list-item-title>
-          <!-- <v-badge class="white--text ml-1" color="red" v-if="getNotification(channel) > 0 && channel.id !== currentChannel.id" ></v-badge>
-          <v-badge class="white--text " color="transparent" style="inset: auto;" v-if="getNotification(channel) > 0 && channel.id !== currentChannel.id" >{{ getNotification(channel)}}</v-badge> -->
         </v-list-item-content>
 
-        <!-- <v-badge class="white--text ml-1 align-items-center" color="red"  ></v-badge>
-        <v-badge class="white--text " color="transparent" style="inset: auto; top: -5px;right: -1px;" >{{ getNotification(channel)}}</v-badge> -->
+        <v-badge class="white--text ml-1 align-items-center" color="red"  style="zindex: 100;" v-if="getNotification(channel) > 0 && channel.id !== currentChannel.id"></v-badge>
+        <v-badge class="white--text " color="transparent" style="inset: auto; top: -5px;right: -1px;" v-if="channel.id !== currentChannel.id">{{ getNotification(channel)}}</v-badge>
       </v-list-item>
     </span>
 </template>

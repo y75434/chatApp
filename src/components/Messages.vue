@@ -1,10 +1,13 @@
 <template>
-  <v-col cols="12" sm="8" md="8" class="py-0 " style=" margin-left: 300px;">
+  <v-col class="py-0 " style=" margin-left: 300px;">
     <v-container >
       <v-app-bar color="deep-white accent-4" style="z-index:10" dense>
-        <v-toolbar-title><v-icon>mdi-pound</v-icon>{{ channelName }}</v-toolbar-title>
-          <v-btn icon><v-icon>mdi-star-outline</v-icon></v-btn>
-            <v-spacer></v-spacer>
+        <v-toolbar-title>
+          <v-icon>mdi-pound</v-icon>
+          {{ channelName }}
+          <v-icon>mdi-star-outline</v-icon>
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
       </v-app-bar>
       <SingleMessage :messages="messages" style="overflow-y: auto; height:70vh"></SingleMessage>
       <MessageForm/>
@@ -37,7 +40,7 @@ export default {
       if (this.channel !== null) {
         return this.channel.name
       } else {
-        return 'Welcome'
+        return 'Welcome to Slack'
       }
     }
   },
@@ -59,9 +62,9 @@ export default {
         message.id = snapshot.key
         this.messages.push(message)
         // 移動到最上層
-        this.$nextTick(() => {
-          $('html, body').scrollTop($(document).height())
-        })
+        // this.$nextTick(() => {
+        //   $('html, body').scrollTop($(document).height())
+        // })
       })
       // 傳送參數到事件
       this.addToListeners(this.currentChannel.id, ref, 'child_added')
