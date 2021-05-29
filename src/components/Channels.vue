@@ -1,8 +1,4 @@
 <template>
-    <!--
-      <span v-if="getNotification(channel) > 0 && channel.id !== currentChannel.id">{{ getNotification(channel) }}</span>
-     -->
-
     <span>
       <v-list-item class="d-flex" v-for="channel in channels" :key="channel.id" @click="changeChannel(channel)">
         <v-list-item-icon  >
@@ -14,7 +10,7 @@
         </v-list-item-content>
 
         <v-badge class="white--text ml-1 align-items-center" color="red"  style="zindex: 100;" v-if="getNotification(channel) > 0 && channel.id !== currentChannel.id"></v-badge>
-        <v-badge class="white--text " color="transparent" style="inset: auto; top: -5px;right: -1px;" v-if="channel.id !== currentChannel.id">{{ getNotification(channel)}}</v-badge>
+        <v-badge class="white--text " color="transparent" style="inset: auto; top: -5px;right: -1px;" v-if="getNotification(channel) > 0 && channel.id !== currentChannel.id">{{ getNotification(channel)}}</v-badge>
       </v-list-item>
     </span>
 </template>
@@ -22,7 +18,6 @@
 <script>
 import firebase from 'firebase'
 import { mapGetters } from 'vuex'
-import mixin from '../mixins'
 
 export default {
   name: 'channels',
@@ -37,12 +32,8 @@ export default {
       channel: null
     }
   },
-  mixins: [mixin],
   computed: {
     ...mapGetters(['currentChannel', 'isPrivate'])
-    // hasErrors () {
-    //   return this.errors.length > 0
-    // }
   },
   watch: {
     isPrivate () {
@@ -61,7 +52,6 @@ export default {
         .then(() => {
           this.$store.dispatch('setCurrentChannel', newChannel)
           this.new_channel = ''
-          // $('#channelModal').modal('hide')
         })
         .catch((error) => {
           this.errors.push(error.message)
@@ -86,15 +76,18 @@ export default {
     handleNotifications (channelId, currentChannelId, notifCount, snapshot) {
       // 確認頻道是否加入通知陣列
       let lastTotal = 0
+      // index是符合標準的平到通知數量
       const index = notifCount.findIndex(el => el.id === channelId)
-      if (index !== -1) {
-        if (channelId !== currentChannelId) {
-          lastTotal = notifCount[index].total
-          if (snapshot.numChildren() - lastTotal > 0) {
-            notifCount[index].notif = snapshot.numChildren() - lastTotal
-          }
-        }
-        notifCount[index].lastKnownTotal = snapshot.numChildren()
+      if (index !== -1 && channelId !== currentChannelId && snapshot.numChildren() - lastTotal > 0) {
+        lastTotal = notifCount[index].total
+
+        notifCount[index].notif = snapshot.numChildren() - lastTotal
+
+        // 取遠端資料
+        notifCount[index].lastKnownTotal = snapshot.numChildren()// 頻道裡面的第幾個訊息
+        console.log(notifCount)
+        console.log(snapshot.numChildren())
+        console.log()
       } else {
         notifCount.push({
           // 加入到通知陣列中

@@ -8,17 +8,14 @@
       <v-list-item-content >
         <v-list-item-title class="white--text">{{ user.name }}</v-list-item-title>
       </v-list-item-content>
-      <v-badge class="white--text ml-1 align-items-center" color="red"  style="zindex: 100;"></v-badge>
-      <v-badge class="white--text " color="transparent" style="inset: auto; top: -5px;right: -1px;" >0</v-badge>
-      <!-- <v-badge class="white--text ml-2" color="red" v-show="getNotification(user) >= 1" >hh</v-badge>
-      <v-badge class="white--text " color="transparent" style="inset: auto; top: -5px;right: -1px;" v-if="getNotification(user) >= 1">gg{{ getNotification(user)}}</v-badge> -->
+      <v-badge class="white--text ml-1 align-items-center" color="red" v-if="getNotification(user) > 0" style="zindex: 100;"></v-badge>
+      <v-badge class="white--text " color="transparent" style="inset: auto; top: -5px;right: -1px;" v-if="getNotification(user) > 0 ">0</v-badge>
     </v-list-item>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import mixin from '../mixins'
 import firebase from 'firebase'
 
 export default {
@@ -33,7 +30,6 @@ export default {
       channel: null
     }
   },
-  mixins: [mixin],
   computed: {
     ...mapGetters(['currentUser', 'currentChannel', 'isPrivate'])
   },
@@ -57,20 +53,44 @@ export default {
 
       this.presenceRef.on('child_added', snapshot => {
         if (this.currentUser.uid !== snapshot.key) {
-          // this.addStatusToUser(snapshot.key)
           const channelId = this.getChannelId(snapshot.key)
           this.privateMessagesRef.child(channelId).on('value', snapshot => {
-            // this.handleNotifications(channelId, this.currentChannel.id, this.notifCount, snapshot)
+            this.handleNotifications(channelId, this.notifCount, snapshot)
           })
         }
       })
 
       this.presenceRef.on('child_removed', snapshot => {
         if (this.currentUser.uid !== snapshot.key) {
-          // this.addStatusToUser(snapshot.key, false)
           this.privateMessagesRef.child(this.getChannelId(snapshot.key)).off()
+          console.log('success')
         }
       })
+    },
+    handleNotifications (channelId, notifCount, snapshot) {
+      // 確認頻道是否加入通知陣列
+      let lastTotal = 0
+
+      // index是符合標準的平到通知數量
+      const index = notifCount.findIndex(el => el.id === channelId)
+      if (index !== -1 && snapshot.numChildren() - lastTotal > 0) {
+        lastTotal = notifCount[index].total
+
+        notifCount[index].notif = snapshot.numChildren() - lastTotal
+
+        // 取遠端資料
+        notifCount[index].lastKnownTotal = snapshot.numChildren()// 頻道裡面的第幾個訊息
+        console.log(0)
+      } else {
+        notifCount.push({
+          // 加入到通知陣列中
+          id: channelId,
+          total: snapshot.numChildren(),
+          lastKnownTotal: snapshot.numChildren(),
+          notif: 0
+        })
+        console.log(1)
+      }
     },
     // 計算有幾個通知
     getNotification (user) {
@@ -78,9 +98,12 @@ export default {
       let notif = 0
       this.notifCount.forEach(el => {
         if (el.id === channelId) {
+          console.log('el.notif')
+
           notif = el.notif
         }
       })
+
       return notif
     },
     resetNotifications (user = null) {
@@ -97,9 +120,11 @@ export default {
         this.notifCount[index].total = this.notifCount[index].lastKnownTotal
         this.notifCount[index].notif = 0
       }
+      console.log(3)
     },
     detachListeners () {
       this.usersRef.off()
+      this.presenceRef.off()
 
       this.channels.forEach(el => {
         this.messagesRef.child(el.id).off()
@@ -109,8 +134,10 @@ export default {
     changeChannel (user) {
       if (this.channel === null) {
         this.resetNotifications(user)
+        console.log(4)
       } else {
         this.resetNotifications()
+        console.log(5)
       }
       // 轉換頻道
       const channelId = this.getChannelId(user.uid)
@@ -119,6 +146,7 @@ export default {
       // 到私人訊息頁
       this.$store.dispatch('setPrivate', true)
       this.$store.dispatch('setCurrentChannel', channel)
+      console.log('2')
     },
     // 我不懂這行要幹嘛
     getChannelId (userId) {
