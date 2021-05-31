@@ -1,5 +1,5 @@
 <template>
-  <v-col class="py-0" style="overflow-y: auto; height: 90vh; width: 300px; position: fixed;">
+    <v-col class="p-0" col='12'  md="12" lg="12" >
       <v-list color="#4a154b" style="">
         <v-list-item>
           <v-list-item-avatar>

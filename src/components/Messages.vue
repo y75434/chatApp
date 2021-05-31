@@ -1,5 +1,5 @@
 <template>
-  <v-col class="py-0 " style=" margin-left: 300px;">
+  <v-col col='12'  md="12" lg="12">
     <v-container >
       <v-app-bar color="deep-white accent-4" style="z-index:10" dense>
         <v-toolbar-title>
@@ -9,7 +9,7 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
       </v-app-bar>
-      <SingleMessage :messages="messages" style="overflow-y: auto; height:70vh"></SingleMessage>
+      <SingleMessage :messages="messages" style="overflow-y: auto; height:80vh"></SingleMessage>
       <MessageForm/>
     </v-container>
 

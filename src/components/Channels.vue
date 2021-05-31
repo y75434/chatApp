@@ -42,6 +42,9 @@ export default {
       }
     }
   },
+  created () {
+    this.getNotification()
+  },
   methods: {
     addChannel () {
       this.errors = []
@@ -85,9 +88,6 @@ export default {
 
         // 取遠端資料
         notifCount[index].lastKnownTotal = snapshot.numChildren()// 頻道裡面的第幾個訊息
-        console.log(notifCount)
-        console.log(snapshot.numChildren())
-        console.log()
       } else {
         notifCount.push({
           // 加入到通知陣列中
