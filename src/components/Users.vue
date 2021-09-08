@@ -58,7 +58,7 @@ export default {
       this.$store.dispatch('setPrivate', true)
       this.$store.dispatch('setCurrentChannel', channel)
     },
-    // 我不懂這行要幹嘛
+    // 
     getChannelId (userId) {
       return userId < this.currentUser.uid ? userId + '/' + this.currentUser.uid : this.currentUser.uid + '/' + userId
     }
